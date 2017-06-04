@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/Desktop/第三学期课程/应用集成/estafador/estafador.iml" filepath="$USER_HOME$/Desktop/第三学期课程/应用集成/estafador/estafador.iml" />
+      <module fileurl="file://$PROJECT_DIR$/estafador.iml" filepath="$PROJECT_DIR$/estafador.iml" />
     </modules>
   </component>
 </project>
