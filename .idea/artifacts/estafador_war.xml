@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="estafador:war">
+    <output-path>$USER_HOME$/Desktop/第三学期课程/应用集成/estafador/target</output-path>
+    <root id="archive" name="estafador.war">
+      <element id="artifact" artifact-name="estafador:war exploded" />
+    </root>
+  </artifact>
+</component>

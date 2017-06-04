@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="estafador:war exploded">
+    <output-path>$USER_HOME$/Desktop/第三学期课程/应用集成/estafador/target/estafador</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="estafador" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$USER_HOME$/Desktop/第三学期课程/应用集成/estafador/target/estafador/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="estafador/web/Web" />
+    </root>
+  </artifact>
+</component>
