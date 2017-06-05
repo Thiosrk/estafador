@@ -3,27 +3,26 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>首页</title>
     <meta charset="utf-8">
+    <title>显示结果</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script type="text/javascript" src="${webRoot}/js/jQuery-core/jquery-1.6.1.min.js?cdntime=${cdntime}"></script>
+    <script type="text/javascript">
+        $(function () {
+            alert("测试静态资源加载");
+        });
+    </script>
 </head>
 <body>
 
-
-<h2>
-    <a href="http://code.YouMeek.com" target="_blank">Hello YouMeek</a>
-</h2>
+登录名：${user.sysUserLoginName}
 
 <br>
 
-<a href="/sysUserController/showUserToJspById/1" target="_blank">查询用户信息并跳转到一个JSP页面</a>
-
-<br>
-
-<a href="/sysUserController/showUserToJSONById/1" target="_blank">查询用户信息并直接输出JSON数据</a>
+真实姓名：${user.sysUserRealName}
 
 </body>
 </html>
