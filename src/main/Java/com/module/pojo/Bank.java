@@ -1,25 +1,15 @@
 package com.module.pojo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 银行行业实体类
  * Created by xuyafan on 2017/6/9.
  */
 public class Bank {
-    /**
-     * 银行行业信息
-     */
-    private String amount; //成交额
 
-    private String up; //上涨的股票数
-
-    private String down; //下跌的股票数
-
-
-    private String firstName;//领涨股，该行业最牛的
-
-    private String firstChange; //领涨股的涨跌额
-
-    private String firstChangeP; //领涨股的涨跌幅
+    private String date;//日期
 
     /**
      * 行业的平均值信息
@@ -33,52 +23,14 @@ public class Bank {
     private String avg_npr;         //平均净利率
     private String avg_roe;         //平均ROE
 
-    public String getAmount() {
-        return amount;
+    private List<Report> reports =new ArrayList<Report>();
+
+    public List<Report> getReports() {
+        return reports;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getUp() {
-        return up;
-    }
-
-    public void setUp(String up) {
-        this.up = up;
-    }
-
-    public String getDown() {
-        return down;
-    }
-
-    public void setDown(String down) {
-        this.down = down;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getFirstChange() {
-        return firstChange;
-    }
-
-    public void setFirstChange(String firstChange) {
-        this.firstChange = firstChange;
-    }
-
-    public String getFirstChangeP() {
-        return firstChangeP;
-    }
-
-    public void setFirstChangeP(String firstChangeP) {
-        this.firstChangeP = firstChangeP;
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 
     public String getAvg_totalValue() {
@@ -145,15 +97,18 @@ public class Bank {
         this.avg_roe = avg_roe;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Bank{" +
-                "amount='" + amount + '\'' +
-                ", up='" + up + '\'' +
-                ", down='" + down + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", firstChange='" + firstChange + '\'' +
-                ", firstChangeP='" + firstChangeP + '\'' +
+                "date='" + date + '\'' +
                 ", avg_totalValue='" + avg_totalValue + '\'' +
                 ", avg_netAsset='" + avg_netAsset + '\'' +
                 ", avg_netMargin='" + avg_netMargin + '\'' +
@@ -162,6 +117,7 @@ public class Bank {
                 ", avg_gpr='" + avg_gpr + '\'' +
                 ", avg_npr='" + avg_npr + '\'' +
                 ", avg_roe='" + avg_roe + '\'' +
+                ", reports=" + reports +
                 '}';
     }
 }

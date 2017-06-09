@@ -4,8 +4,15 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
+import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLLIElement;
 import com.module.pojo.Bank;
+import com.module.pojo.Report;
 import com.module.pojo.Stock;
+import org.apache.commons.logging.LogFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,6 +21,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
 
 import static java.util.Arrays.asList;
 
@@ -27,7 +35,7 @@ import static java.util.Arrays.asList;
 public class Spider {
 
 
-    private static final List<String> STOCKIDs = new ArrayList<String>(asList(
+    public static final List<String> STOCKIDs = new ArrayList<String>(asList(
             "sh600000", "sh600015", "sh600016", "sh600036", "sh600908",
             "sh600919", "sh600926", "sh601009", "sh601128", "sh601166",
             "sh601169", "sh601229", "sh601288", "sh601328", "sh601398",
@@ -45,10 +53,18 @@ public class Spider {
          * 用法示例
          */
         //1.多线程获取所有股票信息,由于是网页获取的，都是最新的
-        spider.getAllStock();
+//        spider.getAllStock();
 
         //2.单个获取某股票信息,由于是网页获取的，都是最新的
 //        spider.getStock("sh600015");
+
+        //3.获得银行行业的信息 TODO:cannot
+//        Bank bank = spider.getBank();
+//        bank.setReports(spider.getBankReports());
+
+        //4.获得某股票的研究报告
+        spider.getStockReports("sh600000");
+
 
 
     }
@@ -208,17 +224,125 @@ public class Spider {
             bank.setAvg_npr(avg_npr);
             bank.setAvg_roe(avg_roe);
 
-            String url2 ="";
-            HtmlPage page2 = webClient.getPage(url2);
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
         return bank;
 
     }
+
+
+
+    public List<Report> getStockReports(String stockCode) {
+        // 定义即将访问的链接
+        String url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?symbol="
+                + stockCode + "&t1=all&p=1";
+        List<Report> reports = new ArrayList<Report>();
+        try {
+            Document doc = Jsoup.connect(url).get();
+
+            Element tbody = doc.getElementsByTag("tbody").get(0);
+
+            Elements trs = tbody.getElementsByTag("tr");
+            for (int i = 2; i < trs.size(); i++) {
+                Element tr = trs.get(i);
+                Elements tds = tr.getElementsByTag("td");
+                ArrayList<String> strings = new ArrayList<String>();
+                for (Element td : tds) {
+                    strings.add(td.text());
+                }
+                Element link = tr.select("a[href]").first();
+                String linkString = link.attr("href");
+
+                Report report =new Report();
+                report.setId(strings.get(0));
+                report.setTitle(strings.get(1));
+                report.setRateType(strings.get(2));
+                report.setDate(strings.get(3));
+                report.setOrg(strings.get(4));
+                report.setReporter(strings.get(5));
+                report.setReportUrl(linkString);
+
+
+                System.out.println(report.toString());
+                report =getReportDetail(report);
+                reports.add(report);
+                System.out.println(report.getmContent());
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return reports;
+    }
+
+    public Report getReportDetail(Report report){
+
+        try {
+            Document doc = Jsoup.connect(report.getReportUrl()).get();
+
+            Element title = doc.getElementsByTag("h1").get(0);
+
+            Element detail = doc.getElementsByClass("creab").get(0);
+
+            Element content = doc.getElementsByTag("p").get(0);
+
+            // 格式化
+            String contentString = content.outerHtml();
+
+            contentString = "      " + contentString;
+            contentString = contentString.replaceAll("<br>", "\n");
+            contentString = contentString.replaceAll("<.*?>", "");
+            contentString = contentString.replaceAll("&nbsp;", "  ");
+            System.out.println(contentString);
+
+
+            report.setmTitle(title.text());
+            report.setmDetail(detail.text());
+            report.setmContent(contentString);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return report;
+
+    }
+
+//    public List<Report> getBankReports() {
+//
+//        //行业研报
+//        List<Report> reports = new ArrayList<Report>();
+//
+//        String url = "http://data.eastmoney.com/report/hy,600000_1.html";
+//
+//        try {
+//           WebClient webClient =getWebClient();
+//
+//            HtmlPage page = webClient.getPage(url);
+//            System.out.println("1----");
+//            //等待2s
+//            webClient.waitForBackgroundJavaScript(10000);
+//
+//
+//            System.out.println(page.asXml());
+//            System.out.println("2-----");
+//            String date = page.querySelector("#dt_1").asXml();
+//
+//
+//            System.out.println("3-----");
+////            System.out.println(date);
+//
+//
+//
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return reports;
+//
+//    }
 
 
     private WebClient getWebClient() {
