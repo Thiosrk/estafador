@@ -63,7 +63,7 @@ public class Spider {
 //        bank.setReports(spider.getBankReports());
 
         //4.获得某股票的研究报告
-        spider.getStockReports("sh600000");
+        spider.getReports("sh600000",2);
 
 
 
@@ -233,10 +233,16 @@ public class Spider {
 
 
 
-    public List<Report> getStockReports(String stockCode) {
-        // 定义即将访问的链接
-        String url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?symbol="
-                + stockCode + "&t1=all&p=1";
+    public List<Report> getReports(String stockCode,int page) {
+        String url;
+        if(stockCode.equals("bank")){
+            url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=3&industry=%D2%F8%D0%D0%D0%D0%D2%B5&symbol=&p=" + page;
+        }else{
+            url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?symbol="
+                    + stockCode + "&t1=all&p="+page;
+        }
+
+
         List<Report> reports = new ArrayList<Report>();
         try {
             Document doc = Jsoup.connect(url).get();
@@ -267,7 +273,7 @@ public class Spider {
                 System.out.println(report.toString());
                 report =getReportDetail(report);
                 reports.add(report);
-                System.out.println(report.getmContent());
+//                System.out.println(report.getmContent());
             }
 
         } catch (IOException e) {
@@ -277,7 +283,7 @@ public class Spider {
         return reports;
     }
 
-    public Report getReportDetail(Report report){
+    private Report getReportDetail(Report report){
 
         try {
             Document doc = Jsoup.connect(report.getReportUrl()).get();
@@ -295,7 +301,6 @@ public class Spider {
             contentString = contentString.replaceAll("<br>", "\n");
             contentString = contentString.replaceAll("<.*?>", "");
             contentString = contentString.replaceAll("&nbsp;", "  ");
-            System.out.println(contentString);
 
 
             report.setmTitle(title.text());
@@ -310,39 +315,9 @@ public class Spider {
 
     }
 
-//    public List<Report> getBankReports() {
-//
-//        //行业研报
-//        List<Report> reports = new ArrayList<Report>();
-//
-//        String url = "http://data.eastmoney.com/report/hy,600000_1.html";
-//
-//        try {
-//           WebClient webClient =getWebClient();
-//
-//            HtmlPage page = webClient.getPage(url);
-//            System.out.println("1----");
-//            //等待2s
-//            webClient.waitForBackgroundJavaScript(10000);
-//
-//
-//            System.out.println(page.asXml());
-//            System.out.println("2-----");
-//            String date = page.querySelector("#dt_1").asXml();
-//
-//
-//            System.out.println("3-----");
-////            System.out.println(date);
-//
-//
-//
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return reports;
-//
-//    }
+
+
+
 
 
     private WebClient getWebClient() {
