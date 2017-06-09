@@ -66,3 +66,24 @@ CREATE TABLE report
     reportUrl VARCHAR(255)
 );
 CREATE UNIQUE INDEX Report_id_uindex ON report (id);
+
+CREATE TABLE kstock
+(
+    code VARCHAR(255) PRIMARY KEY NOT NULL,
+    date VARCHAR(255),
+    open VARCHAR(255),
+    high VARCHAR(255),
+    close VARCHAR(255),
+    low VARCHAR(255),
+    volume VARCHAR(255),
+    price_change VARCHAR(255),
+    p_change VARCHAR(255),
+    ma5 VARCHAR(255),
+    ma10 VARCHAR(255),
+    ma20 VARCHAR(255),
+    v_ma5 VARCHAR(255),
+    v_ma10 VARCHAR(255),
+    v_ma20 VARCHAR(255),
+    turnover VARCHAR(255)
+);
+CREATE UNIQUE INDEX KStock_code_uindex ON kstock (code);
