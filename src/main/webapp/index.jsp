@@ -1,29 +1,153 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://"
+            + request.getServerName() + ":" + request.getServerPort()
+            + path + "/";
+%>
 <%@ include file="/WEB-INF/view/common/tagPage.jsp" %>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>首页</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online-Stock Analysis</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="statics/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link href="statics/css/font-awesome.css" rel="stylesheet" />
+    <!--CUSTOM BASIC STYLES-->
+    <link href="statics/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="statics/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    <script type="text/javascript">
+        function test(){
+//实现页面的跳转
+            window.location.href='<%=basePath%>Stock/Stockspecific';
+//            './login.jsp?canshu=10';
+        }
+    </script>
 </head>
 <body>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-head-line" >
+                            <span style="margin-left: 35%">银行业股票盘点</span>
+                        </h1>
+                        <h1 class="page-subhead-line">每日更新 </h1>
+
+                    </div>
+                </div>
+                <!-- /. ROW  -->
 
 
-<h2>
-    <a href="http://code.YouMeek.com" target="_blank">Hello YouMeek</a>
-</h2>
+            <div class="row">
+                <div class="col-md-6" style="margin-left: 20%">
+                     <!--    Hover Rows  -->
+                    <div class="panel panel-default" >
+                        <div class="panel-heading">
+                            <span  style="margin-left: 40%">股票涨跌榜</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>股票代码</th>
+                                            <th>名称</th>
+                                            <th>最新价</th>
+                                            <th>涨跌额</th>
+                                            <th>涨跌幅</th>
+                                            <th>买入</th>
+                                            <th>卖出</th>
+                                            <th>昨收</th>
+                                            <th>今开</th>
+                                            <th>最高</th>
+                                            <th>最低</th>
+                                            <th>成交量</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr onclick="test()">
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                        </tr>
+                                        <tr>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                        </tr>
+                                        <tr>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                        </tr>
+                                        <tr>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                            <td>sh60000</td>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End  Hover Rows  -->
+                </div>
 
-<br>
+    </div>
+    <!-- /. WRAPPER  -->
+    <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+    <!-- JQUERY SCRIPTS -->
+    <script src="statics/js/jquery-1.10.2.js"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="statics/js/bootstrap.js"></script>
+     <!-- METISMENU SCRIPTS -->
+    <script src="statics/js/jquery.metisMenu.js"></script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="statics/js/custom.js"></script>
 
-<a href="/sysUserController/showUserToJspById/1" target="_blank">查询用户信息并跳转到一个JSP页面</a>
-
-<br>
-
-<a href="/sysUserController/showUserToJSONById/1" target="_blank">查询用户信息并直接输出JSON数据</a>
 
 </body>
 </html>
