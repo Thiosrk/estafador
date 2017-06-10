@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <script type="text/javascript" src="${webRoot}/js/jQuery-core/jquery-1.6.1.min.js?cdntime=${cdntime}"></script>
+    <script type="text/javascript" src="statics/js/jQuery-core/jquery-1.6.1.min.js?cdntime=${cdntime}"></script>
     <script type="text/javascript">
         $(function () {
             alert("测试静态资源加载");
@@ -18,11 +18,19 @@
 </head>
 <body>
 
-登录名：${user.sysUserLoginName}
+code：${stock.code}
 
 <br>
 
-真实姓名：${user.sysUserRealName}
+close：${stock.close}
+
+<br>
+
+date：${stock.date}
+
+<br>
+
+open：${stock.open}
 
 </body>
 </html>

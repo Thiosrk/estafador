@@ -33,6 +33,12 @@
     </script>
 </head>
 <body>
+
+<br>
+
+<a href="/Stock/stock/sh600000" target="_blank">查询用户信息并跳转到一个JSP页面</a>
+
+<br>
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-head-line" >
