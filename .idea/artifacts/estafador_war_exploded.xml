@@ -61,6 +61,11 @@
           <element id="library" level="project" name="Maven: org.eclipse.jetty:jetty-http:9.4.5.v20170502" />
           <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.4.5.v20170502" />
           <element id="library" level="project" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.4.5.v20170502" />
+          <element id="library" level="project" name="Maven: net.sf.json-lib:json-lib:2.4" />
+          <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.0" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.5" />
+          <element id="library" level="project" name="Maven: net.sf.ezmorph:ezmorph:1.0.6" />
         </element>
       </element>
       <element id="directory" name="META-INF">
