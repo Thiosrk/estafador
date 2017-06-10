@@ -1,6 +1,9 @@
 package com.module.pojo;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Stock 实体类，用于实例存储网页数据，数据库需要什么拿什么
  * Created by xuyafan on 2017/6/8.
@@ -72,6 +75,16 @@ public class Stock {
     private String rank_gpr;    //毛利率排名
     private String rank_npr;     //净利率排名
     private String rank_roe;    //ROE排名
+
+    private List<Report> reports =new ArrayList<Report>();
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
 
 
 
