@@ -269,6 +269,7 @@ public class Spider {
                         String linkString = link.attr("href");
 
                         Report report = new Report();
+                        report.setStockId(stockCode);
 
                         report.setTitle(strings.get(1));
                         report.setType(strings.get(2));
@@ -323,6 +324,7 @@ public class Spider {
 
                 String reportUrl =tds.get(1).querySelector("a").getAttributes().getNamedItem("href").getNodeValue();
                 Report report = new Report();
+                report.setStockId("bank");
 
                 report.setTitle(title);
                 report.setType(type);

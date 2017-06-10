@@ -5,7 +5,8 @@ package com.module.pojo;
  * Created by xuyafan on 2017/6/9.
  */
 public class Report {
-    private String id;//序号
+    private String stockId;//报告所属的股票（eg：sh6000000）或者是银行行业（eg：bank）
+
     private String title;// 标题
     private String date;  // 日期
 
@@ -34,6 +35,14 @@ public class Report {
                 '}';
     }
 
+    public String getStockId() {
+        return stockId;
+    }
+
+    public void setStockId(String stockId) {
+        this.stockId = stockId;
+    }
+
     public String getmTitle() {
         return mTitle;
     }
@@ -58,13 +67,6 @@ public class Report {
         this.mContent = mContent;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -117,7 +119,7 @@ public class Report {
     @Override
     public String toString() {
         return "Report{" +
-                "id='" + id + '\'' +
+                "stockId='" + stockId + '\'' +
                 ", title='" + title + '\'' +
                 ", date='" + date + '\'' +
                 ", type='" + type + '\'' +
