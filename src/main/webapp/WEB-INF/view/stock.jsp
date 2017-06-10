@@ -38,7 +38,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="page-head-line">浦发银行sh60000</h1>
+                    <h1 class="page-head-line">${stock.name}</h1>
                     <!--<h1 class="page-subhead-line">This is dummy text , you can replace it with your original text. </h1>-->
                 </div>
             </div>
@@ -47,7 +47,7 @@
                     <div class="panel panel-default">
                        <div class="panel-heading" style="height:100px;">
                               <div style="height:100%;width:40%;margin-top:1.5%;float:left;">
-                              <span style="font-size:36px;margin-left:50%;margin-top:30%;"><b>价格:12.93</b></span>
+                              <span style="font-size:36px;margin-top:30%;"><b>价格:${stock.close}</b></span>
                                   <span class="glyphicon glyphicon-arrow-up"></span>
                               </div>
                               <div style="float:left;">
@@ -55,31 +55,31 @@
                                       <tbody>
                                       <tr>
                                            <th>今开:</th>
-                                           <td>12.88</td>
+                                           <td>${stock.open}</td>
                                            <th>最高:</th>
-                                           <td>12.99</td>
+                                           <td>${stock.high}</td>
                                            <th>最低:</th>
-                                           <td>11.86</td>
+                                           <td>${stock.low}</td>
                                            <th>昨收:</th>
-                                           <td>12.53</td>
+                                           <td>${stock.close}</td>
                                           <th>成交量:</th>
-                                          <td>114.35</td>
+                                          <td>${stock.tradeVol}</td>
                                           <th>成交额:</th>
-                                          <td>1489</td>
+                                          <td>${stock.tradeAmount}</td>
                                       </tr>
                                       <tr>
                                           <th>总市值:</th>
-                                          <td>5876</td>
+                                          <td>${stock.totalValue}</td>
                                           <th>流通市值:</th>
-                                          <td>5876</td>
+                                          <td>${stock.freeValue}</td>
                                           <th>振幅:</th>
-                                          <td>3.35%</td>
+                                          <td>${stock.changeP}</td>
                                           <th>换手率:</th>
-                                          <td>0.45%</td>
+                                          <td>${stock.tr}</td>
                                           <th>市净率:</th>
-                                          <td>0.548%</td>
+                                          <td>${stock.pb}</td>
                                           <th>市盈率:</th>
-                                          <td>6.77</td>
+                                          <td>${stock.pe}</td>
                                       </tr>
                                       </tbody>
                                   </table>

@@ -34,12 +34,12 @@
     <script src="<c:url value="/js/custom.js"/>"></script>
 
 
-    <script type="text/javascript">
-        function load(){
-//实现页面的跳转
-            window.location.href='<%=basePath%>Stock/Stockspecific/sh600000';
-        }
-    </script>
+    <%--<script type="text/javascript">--%>
+        <%--function load(){--%>
+<%--//实现页面的跳转--%>
+            <%--window.location.href='<%=basePath%>Stock/Stockspecific/'+${id};--%>
+        <%--}--%>
+    <%--</script>--%>
 </head>
 <body>
 
@@ -72,8 +72,6 @@
                                             <th>最新价</th>
                                             <th>涨跌额</th>
                                             <th>涨跌幅</th>
-                                            <th>买入</th>
-                                            <th>卖出</th>
                                             <th>昨收</th>
                                             <th>今开</th>
                                             <th>最高</th>
@@ -82,62 +80,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr onclick="load()">
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
+                                    <c:if test="${!empty bankstocklist }">
+                                    <c:forEach items="${bankstocklist}" var="stock">
+                                    <tr onclick="function test() {
+                                            window.location.href='<%=basePath%>Stock/Stockspecific/'+${stock.id};
+                                    }">
+                                            <td>${stock.id}</td>
+                                            <td>${stock.name}</td>
+                                            <td>${stock.price}</td>
+                                            <td>${stock.change}</td>
+                                            <td>${stock.changeP}</td>
+                                            <td>${stock.close}</td>
+                                            <td>${stock.open}</td>
+                                            <td>${stock.high}</td>
+                                            <td>${stock.low}</td>
+                                            <td>${stock.tradeVol}  <a href="<%=basePath%>Stock/Stockspecific/${stock.id}">123</a></td>
+
                                         </tr>
-                                        <tr onclick="load()">
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr onclick="load()">
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr onclick="load()">
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>sh60000</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
+                                      </c:forEach>
+                                    </c:if>
                                     </tbody>
                                 </table>
                             </div>

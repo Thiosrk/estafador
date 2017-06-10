@@ -3,6 +3,7 @@ package com.module.controller;
 import com.module.pojo.Echartskstock;
 import com.module.pojo.Kstock;
 import com.module.service.KstockService;
+import com.module.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +30,19 @@ public class StockController {
 
     @Autowired
     KstockService kstockService;
+    @Autowired
+    StockService stockService;
 
     @RequestMapping("/Stockspecific/{stockid}")
     public String Stockspecific(HttpServletRequest request, Model model,@PathVariable("stockid")String stockid){
         List<Kstock> kstocks = kstockService.selectByCode(stockid);
         List<Echartskstock> echartskstocks =new ArrayList<Echartskstock>();
+        Stock stock=stockService.getStock(stockid);
         for(int i=0;i<kstocks.size();i++){
            echartskstocks.add(new Echartskstock(kstocks.get(i).getCode(), kstocks.get(i).getDate(), Double.valueOf(kstocks.get(i).getOpen()),Double.valueOf(kstocks.get(i).getClose()) ,Double.valueOf( kstocks.get(i).getLow()) , Double.valueOf(kstocks.get(i).getHigh()) ));
         }
-        model.addAttribute("stock", kstocks.get(0));
+        model.addAttribute("stock", stock);
+        model.addAttribute("kstock", kstocks.get(0));
         model.addAttribute("echartstock", echartskstocks);
         return "stock";
     }
