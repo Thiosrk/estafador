@@ -96,7 +96,7 @@ public class Stock {
                  String fallStaying, String change, String changeP, String close, String open,
                  String high, String low, String tradeVol, String tradeAmount,
                  String totalValue, String freeValue,
-                 String tr, String pb, String pe, String qr, String datetime) {
+                 String tr, String pb, String pe, String qr) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -116,7 +116,7 @@ public class Stock {
         this.pb = pb;
         this.pe = pe;
         this.qr = qr;
-        this.datetime = datetime;
+
     }
 
     public String getId() {
