@@ -37,12 +37,26 @@
 <body>
 
             <div class="row">
-                <div class="col-md-12">
-                    <h1 class="page-head-line">${stock.name}</h1>
-                    <!--<h1 class="page-subhead-line">This is dummy text , you can replace it with your original text. </h1>-->
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="index.html">${stock.name}</a>
+                        </div>
+                        <div class="header-right">
+                            <a href="login.html" class="btn btn-danger" title="Logout"><i class="fa" style="width: 100px;">返回</i></a>
+
+                        </div>
+                    </nav>
                 </div>
-            </div>
-            <!-- /. ROW  -->
+                <div class="col-md-1"></div>
+                <!-- /. ROW  -->
                     <!--   Kitchen Sink -->
                     <div class="panel panel-default">
                        <div class="panel-heading" style="height:100px;">
