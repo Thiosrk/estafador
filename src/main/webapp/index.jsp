@@ -25,20 +25,14 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
     <script type="text/javascript">
-        function test(){
+        function load(){
 //实现页面的跳转
-            window.location.href='<%=basePath%>Stock/Stockspecific';
-//            './login.jsp?canshu=10';
+            window.location.href='<%=basePath%>Stock/Stockspecific/sh600000';
         }
     </script>
 </head>
 <body>
 
-<br>
-
-<a href="/Stock/stock/sh600000" target="_blank">查询用户信息并跳转到一个JSP页面</a>
-
-<br>
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="page-head-line" >
@@ -78,7 +72,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr onclick="test()">
+                                        <tr onclick="load()">
                                             <td>sh60000</td>
                                             <td>Mark</td>
                                             <td>Otto</td>
@@ -92,7 +86,7 @@
                                             <td>Otto</td>
                                             <td>@mdo</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="load()">
                                             <td>sh60000</td>
                                             <td>Mark</td>
                                             <td>Otto</td>
@@ -106,7 +100,7 @@
                                             <td>Otto</td>
                                             <td>@mdo</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="load()">
                                             <td>sh60000</td>
                                             <td>Mark</td>
                                             <td>Otto</td>
@@ -120,7 +114,7 @@
                                             <td>Otto</td>
                                             <td>@mdo</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="load()">
                                             <td>sh60000</td>
                                             <td>Mark</td>
                                             <td>Otto</td>
