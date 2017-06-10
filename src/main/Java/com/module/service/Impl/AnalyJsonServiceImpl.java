@@ -64,7 +64,8 @@ public class AnalyJsonServiceImpl implements AnalysizeJsonService {
             list[i].setOpen(temp.getString("open"));
             list[i].setHigh(temp.getString("high"));
             list[i].setClose(temp.getString("close"));
-            list[i].setLow(temp.getString("volume"));
+            list[i].setLow(temp.getString("low"));
+            list[i].setVolume(temp.getString("volume"));
             list[i].setPriceChange(temp.getString("price_change"));
             list[i].setpChange(temp.getString("p_change"));
             list[i].setMa5(temp.getString("ma5"));
@@ -148,7 +149,7 @@ public class AnalyJsonServiceImpl implements AnalysizeJsonService {
                         +"',"+"'"+close+"',"+"'"+low+"',"+"'"+volume+"',"+"'"+price_change+"',"+"'"+p_change+"',"
                         +"'"+ma5+"',"+"'"+ma10+"',"+"'"+ma20+"',"+"'"+v_ma5+"',"+"'"+v_ma10+"',"+"'"+v_ma20+"',"
                         +"'"+turnover+"')";
-                System.out.println(insert);
+
                 try {
                     mysqlimpl.update(insert);
                 } catch (SQLException e) {
@@ -156,6 +157,7 @@ public class AnalyJsonServiceImpl implements AnalysizeJsonService {
                 }
             }
         }
+        System.out.println("end");
         return 0;
     }
 

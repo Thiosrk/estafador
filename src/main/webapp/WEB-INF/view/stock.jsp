@@ -14,17 +14,25 @@
     <title>Responsive Bootstrap Advance Admin Template</title>
 
     <!-- BOOTSTRAP STYLES-->
-    <link href="statics/css/bootstrap.css" rel="stylesheet" />
+    <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet" />
     <!-- FONTAWESOME STYLES-->
-    <link href="statics/css/font-awesome.css" rel="stylesheet" />
+    <link href="<c:url value="/css/font-awesome.css"/>" rel="stylesheet" />
     <!--CUSTOM BASIC STYLES-->
-    <link href="statics/css/basic.css" rel="stylesheet" />
+    <link href="<c:url value="/css/basic.css"/>" rel="stylesheet" />
     <!--CUSTOM MAIN STYLES-->
-    <link href="statics/css/custom.css" rel="stylesheet" />
+    <link href="<c:url value="/css/custom.css"/>" rel="stylesheet" />
     <!-- GOOGLE FONTS-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <!-- 引入 ECharts 文件 -->
-    <script src="statics/js/echarts.min.js"></script>
+    <script src="<c:url value="/js/jquery-1.10.2.js"/>"></script>
+    <!-- BOOTSTRAP SCRIPTS -->
+    <script src="<c:url value="/js/bootstrap.js"/>"></script>
+    <!-- METISMENU SCRIPTS -->
+    <script src="<c:url value="/js/jquery.metisMenu.js"/>"></script>
+    <!-- CUSTOM SCRIPTS -->
+    <script src="<c:url value="/js/custom.js"/>"></script>
+
+    <script  src="<c:url value="/js/echarts.min.js"/>"></script>
 </head>
 <body>
 
@@ -450,16 +458,6 @@
                         </div>
                     </div>
                     <!-- End  Kitchen Sink -->
-
-
-<!-- JQUERY SCRIPTS -->
-<script src="statics/js/jquery-1.10.2.js"></script>
-<!-- BOOTSTRAP SCRIPTS -->
-<script src="statics/js/bootstrap.js"></script>
-<!-- METISMENU SCRIPTS -->
-<script src="statics/js/jquery.metisMenu.js"></script>
-<!-- CUSTOM SCRIPTS -->
-<script src="statics/js/custom.js"></script>
 
 
 </body>

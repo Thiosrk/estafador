@@ -35,7 +35,7 @@ public class StockController {
         List<Kstock> kstocks = kstockService.selectByCode(stockid);
         List<Echartskstock> echartskstocks =new ArrayList<Echartskstock>();
         for(int i=0;i<kstocks.size();i++){
-           echartskstocks.add(new Echartskstock(kstocks.get(i).getCode(), kstocks.get(i).getDate(), Integer.valueOf(kstocks.get(i).getOpen()),Integer.valueOf(kstocks.get(i).getClose()) ,Integer.valueOf( kstocks.get(i).getLow()) , Integer.valueOf(kstocks.get(i).getHigh()) ));
+           echartskstocks.add(new Echartskstock(kstocks.get(i).getCode(), kstocks.get(i).getDate(), Double.valueOf(kstocks.get(i).getOpen()),Double.valueOf(kstocks.get(i).getClose()) ,Double.valueOf( kstocks.get(i).getLow()) , Double.valueOf(kstocks.get(i).getHigh()) ));
         }
         model.addAttribute("stock", kstocks.get(0));
         model.addAttribute("echartstock", echartskstocks);
