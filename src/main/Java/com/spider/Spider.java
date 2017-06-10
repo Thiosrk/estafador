@@ -1,29 +1,30 @@
 package com.spider;
 
+
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.*;
-import com.gargoylesoftware.htmlunit.javascript.host.html.HTMLLIElement;
+import com.gargoylesoftware.htmlunit.html.DomNode;
+import com.gargoylesoftware.htmlunit.html.DomNodeList;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.module.pojo.Bank;
 import com.module.pojo.Report;
 import com.module.pojo.Stock;
-import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.logging.Level;
 
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import static java.util.Arrays.asList;
 
 /**
@@ -44,7 +45,7 @@ public class Spider {
             "sh603323", "sz000001", "sz002142", "sz002807", "sz002839"));
 
 
-    private static final int ThreadNumber = 5; //线程池的容量,5比较合适
+
 
     public static void main(String[] args) {
 
@@ -53,108 +54,107 @@ public class Spider {
         /**
          * 用法示例
          */
-        //1.多线程获取所有股票信息,由于是网页获取的，都是最新的
-//        List<Stock> allStocks = spider.getAllStock();
+        //1.获取所有股票最新信息
+//        List<Stock> allStocks = spider.getAllStocks();
 
-        //2.单个获取某股票信息,由于是网页获取的，都是最新的
+        //2.单个获取某股票最新信息
 //        Stock stock = spider.getStock("sh600015");
 
-        //3.获得银行行业的信息
+        //3.获得行业信息
+//        Bank bank = spider.getBank();
+
+        //4.获得银行行业的研究报告
+        //[来源：新浪财经 http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=3&industry=%D2%F8%D0%D0%D0%D0%D2%B5&symbol=&p=1]
+        //[说明：直接获取不到，非API，参数是页数]
 //        List<Report> bankReports = spider.getBankReports(1);
 
 
-        //4.获得某股票的研究报告
-//        List<Report> stockReports = spider.getReports("sh600000");
+        //5.获得某股票的研究报告
+        //[来源：新浪财经]
+//        List<Report> stockReports = spider.getXLReports("sh600000");
+        //[来源：腾讯论坛]
+//        List<Report> stockReports =spider.getTCReports("sh600000");
+
+
+
 
 
     }
 
 
-    public List<Stock> getAllStock() {
+    public List<Stock> getAllStocks() {
 
         List<Stock> stocks = new ArrayList<Stock>();
 
-        // 创建容量为ThreadNumber的线程池。
-        ExecutorService pool = Executors.newFixedThreadPool(ThreadNumber);
-        //将stocks分为ThreadNumber份
-        List<List<String>> spilts = subList(STOCKIDs, ThreadNumber);
-
-
-        List<Future> futures = new ArrayList<Future>();
-
-        for (int i = 0; i < spilts.size(); i++) {
-
-            SpiderThread t = new SpiderThread(spilts.get(i));
-
-            Future f = pool.submit(t);
-            futures.add(f);
+        for(String stockId :STOCKIDs){
+            Stock stock =getStock(stockId);
+            stocks.add(stock);
         }
+        return  stocks;
 
-        System.out.println("获取结果中...");
-        for (Future f : futures) {
-            try {
-                stocks.addAll((ArrayList<Stock>) f.get());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println("得到结果.");
-
-        // 关闭线程池。
-        pool.shutdown();
-
-        for (Stock stock : stocks) {
-            System.out.println(stock.toString());
-        }
-
-        return stocks;
 
     }
 
     public Stock getStock(String stockId) {
-        Stock stock = null;
+        Stock stock =null;
 
-        String url = "http://quote.eastmoney.com/" + stockId + ".html";
+        ArrayList<String> infos = new ArrayList<String>();
+
+        String url1 = "https://gupiao.baidu.com/stock/" + stockId + ".html";
+        String url2 = "http://quote.eastmoney.com/"+stockId+".html";
 
         try {
-            WebClient webClient = getWebClient();
-            HtmlPage page = webClient.getPage(url);
-            //等待js执行，最多10s,setAjaxController后不需要这步，如果不行则开启
-//          webClient.waitForBackgroundJavaScriptStartingBefore(10000);
-//            String pageAsXml = page.asXml();
+            //从百度股票通
+            Document doc = Jsoup.connect(url1).get();
 
-            //股票基本信息
-            String name = page.querySelector("#name").asText();
-            String price = page.querySelector("#price9").asText();
-            String change = page.querySelector("#km1").asText();
-            String changeP = page.querySelector("#km2").asText();
-            String upStaying = page.querySelector("#gt3").asText();
-            String fallStaying = page.querySelector("#gt10").asText();
-            //*[@id="hqDetails"]/table/tbody/tr[1]/td[1]
-            String open = page.querySelector("#gt1").asText();
-            String close = page.querySelector("#gt8").asText();
-            String high = page.querySelector("#gt2").asText();
-            String low = page.querySelector("#gt9").asText();
-            String tradeVol = page.querySelector("#gt5").asText();
-            String tradeAmount = page.querySelector("#gt12").asText();
-            String totalValue = page.querySelector("#gt7").asText();
-            String freeValue = page.querySelector("#gt14").asText();
+            String price = doc.select("#app-wrap > div.stock-info > div > div > strong").get(0).text();
 
-            String tr = page.querySelector("#gt4").asText();
-            String pb = page.querySelector("#gt13").asText();
-            String pe = page.querySelector("#gt6").asText();
-            String qr = page.querySelector("#gt11").asText();
-            String datetime = page.querySelector("#hqTime").asText();
 
-            stock = new Stock(stockId, name, price, upStaying, fallStaying
-                    , change, changeP, close, open, high, low, tradeVol, tradeAmount,
-                    totalValue, freeValue, tr, pb, pe, qr, datetime);
+            String change = doc.select("#app-wrap > div.stock-info > div > div> span:nth-child(2)").get(0).text();
 
-            String netAsset = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(3)").asText();
-            String netMargin = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(4)").asText();
-            String gpr = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(7)").asText();
-            String npr = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(8)").asText();
-            String roe = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(9)").asText();
+
+            String changeP = doc.select("#app-wrap > div.stock-info > div > div> span:nth-child(3)").get(0).text();
+
+
+            Elements sel = doc.getElementsByClass("line1");
+            for (Element ele : sel) {
+                String[] data = ele.text().split(" ");
+                for (int i = 1; i < data.length; i += 2) {
+                    infos.add(data[i]);
+                }
+            }
+
+            sel = doc.getElementsByClass("line2");
+            for (Element ele : sel) {
+                String[] data = ele.text().split(" ");
+                for (int i = 1; i < data.length; i += 2) {
+                    infos.add(data[i]);
+                }
+            }
+
+            String name = doc.select("#app-wrap > div.stock-info > div > h1 > a").text();
+
+
+//            for(int i=0;i<infos.size();i++){
+//                System.out.println(i+": "+infos.get(i));
+//            }
+
+            stock = new Stock(stockId, name, price,
+                    infos.get(3), infos.get(14), change, changeP,
+                    infos.get(11), infos.get(0), infos.get(2),
+                    infos.get(13), infos.get(4), infos.get(5),
+                    infos.get(18), infos.get(7), infos.get(12),
+                    infos.get(19), infos.get(8), infos.get(17)
+            );
+
+            //从东方财富网
+            Document doc2 = Jsoup.connect(url2).get();
+
+            String netAsset = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(3)").get(0).text();
+            String netMargin =  doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(4)").get(0).text();
+            String gpr = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(7)").get(0).text();
+            String npr = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(8)").get(0).text();
+            String roe =doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(1) > td:nth-child(9)").get(0).text();
 
             stock.setNetAsset(netAsset);
             stock.setNetMargin(netMargin);
@@ -164,14 +164,14 @@ public class Spider {
 
 
             //该股票在行业的排名
-            String rank_totalValue = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(2)").asText();
-            String rank_netAsset = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(3)").asText();
-            String rank_netMargin = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(4)").asText();
-            String rank_pe = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(5)").asText();
-            String rank_pb = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(6)").asText();
-            String rank_gpr = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(7)").asText();
-            String rank_npr = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(8)").asText();
-            String rank_roe = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(9)").asText();
+            String rank_totalValue =doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(2)").get(0).text();
+            String rank_netAsset = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(3)").get(0).text();
+            String rank_netMargin = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(4)").get(0).text();
+            String rank_pe =doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(5)").get(0).text();
+            String rank_pb = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(6)").get(0).text();
+            String rank_gpr = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(7)").get(0).text();
+            String rank_npr = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(8)").get(0).text();
+            String rank_roe = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(3) > td:nth-child(9)").get(0).text();
 
             stock.setRank_totalValue(rank_totalValue);
             stock.setRank_netAsset(rank_netAsset);
@@ -182,16 +182,11 @@ public class Spider {
             stock.setRank_npr(rank_npr);
             stock.setRank_roe(rank_roe);
 
-
-            System.out.println(stock.toString());
-            webClient.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
         return stock;
-
 
     }
 
@@ -202,17 +197,17 @@ public class Spider {
         String url = "http://quote.eastmoney.com/sh600000.html";
 
         try {
-            WebClient webClient = getWebClient();
-            HtmlPage page = webClient.getPage(url);
+            Document doc2 = Jsoup.connect(url).get();
+
             //行业的平均值信息
-            String avg_totalValue = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(2)").asText();
-            String avg_netAsset = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(3)").asText();
-            String avg_netMargin = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(4)").asText();
-            String avg_pe = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(5)").asText();
-            String avg_pb = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(6)").asText();
-            String avg_gpr = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(7)").asText();
-            String avg_npr = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(8)").asText();
-            String avg_roe = page.querySelector("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(9)").asText();
+            String avg_totalValue = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(2)").get(0).text();
+            String avg_netAsset = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(3)").get(0).text();
+            String avg_netMargin = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(4)").get(0).text();
+            String avg_pe = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(5)").get(0).text();
+            String avg_pb = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(6)").get(0).text();
+            String avg_gpr = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(7)").get(0).text();
+            String avg_npr = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(8)").get(0).text();
+            String avg_roe = doc2.select("body > div:nth-child(15) > div.fr.w790 > div:nth-child(2) > div.w578 > div.cwzb > table > tbody > tr:nth-child(2) > td:nth-child(9)").get(0).text();
 
             bank = new Bank();
             bank.setAvg_totalValue(avg_totalValue);
@@ -224,6 +219,8 @@ public class Spider {
             bank.setAvg_npr(avg_npr);
             bank.setAvg_roe(avg_roe);
 
+            System.out.println(bank.toString());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -232,7 +229,7 @@ public class Spider {
     }
 
 
-    public List<Report> getReports(String stockCode) {
+    public List<Report> getXLReports(String stockCode) {
         String baseurl;
         int page = 1;
         boolean loop = true;
@@ -248,13 +245,13 @@ public class Spider {
 
         while (loop) {
             String url = baseurl + page;
-            System.out.println(url);
+
             try {
                 Document doc = Jsoup.connect(url).get();
 
 
                 if (!doc.select("body > div > div.main > table > tbody > tr:nth-child(3) > td").text().equals("没有找到相关内容..")) {
-                    System.out.println("1----");
+
                     Element tbody = doc.getElementsByTag("tbody").get(0);
 
                     Elements trs = tbody.getElementsByTag("tr");
@@ -268,19 +265,11 @@ public class Spider {
                         Element link = tr.select("a[href]").first();
                         String linkString = link.attr("href");
 
-                        Report report = new Report();
-                        report.setStockId(stockCode);
-
-                        report.setTitle(strings.get(1));
-                        report.setType(strings.get(2));
-                        report.setDate(strings.get(3));
-                        report.setOrg(strings.get(4));
-                        report.setReporter(strings.get(5));
-                        report.setReportUrl(linkString);
+                        Report report = new Report(stockCode,strings.get(1),strings.get(3),
+                                strings.get(2),strings.get(4),strings.get(5),linkString);
 
 
                         System.out.println(report.toString());
-                        report = getReportDetail(report);
                         reports.add(report);
 
                     }
@@ -303,7 +292,8 @@ public class Spider {
 
     public  List<Report> getBankReports(int i){
         // 定义即将访问的链接
-        String url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=3&industry=%D2%F8%D0%D0%D0%D0%D2%B5&symbol=&p=" + i;
+
+        String url ="http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=3&industry=%D2%F8%D0%D0%D0%D0%D2%B5&symbol=&p="+i;
         ArrayList<Report> bankReports = new ArrayList<Report>();
         try {
 
@@ -323,19 +313,8 @@ public class Spider {
                 String reporter =tds.get(5).asText();
 
                 String reportUrl =tds.get(1).querySelector("a").getAttributes().getNamedItem("href").getNodeValue();
-                Report report = new Report();
-                report.setStockId("bank");
-
-                report.setTitle(title);
-                report.setType(type);
-                report.setDate(date);
-                report.setOrg(org);
-                report.setReporter(reporter);
-                report.setReportUrl(reportUrl);
-
-                report = getReportDetail(report);
+                Report report = new Report("bank",title,date,type,org,reporter,reportUrl);
                 System.out.println(report.toString());
-
                 bankReports.add(report);
             }
 
@@ -347,38 +326,6 @@ public class Spider {
         }
 
         return bankReports;
-    }
-
-    private Report getReportDetail(Report report) {
-
-        try {
-            Document doc = Jsoup.connect(report.getReportUrl()).get();
-
-            Element title = doc.getElementsByTag("h1").get(0);
-
-            Element detail = doc.getElementsByClass("creab").get(0);
-
-            Element content = doc.getElementsByTag("p").get(0);
-
-            // 格式化
-            String contentString = content.outerHtml();
-
-            contentString = "      " + contentString;
-            contentString = contentString.replaceAll("<br>", "\n");
-            contentString = contentString.replaceAll("<.*?>", "");
-            contentString = contentString.replaceAll("&nbsp;", "  ");
-
-
-            report.setmTitle(title.text());
-            report.setmDetail(detail.text());
-            report.setmContent(contentString);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return report;
-
     }
 
 
@@ -400,48 +347,45 @@ public class Spider {
         return webClient;
     }
 
-    private class SpiderThread implements Callable<Object> {
-        List<String> stockIds;
+    public  List<Report> getTCReports(String stockId) {
+        List<Report> reports = new ArrayList<Report>();
+        String url = "http://message.finance.qq.com/report/get_hq_report.php?n=50&zqdm="+stockId.substring(2)+"&seq=0&format=json";
+        try {
+            URL getUrl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) getUrl.openConnection();
+            connection.connect();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
+            String lines = reader.readLine().substring(12);
 
-        private SpiderThread(List<String> stockIds) {
-            this.stockIds = stockIds;
-        }
+            JSONObject record = new JSONObject(lines);
+            JSONObject news = record.getJSONObject("data");
+            JSONArray list = news.getJSONArray("report");
+            for (int i=0;i<list.length();i++) {
+                JSONObject onenews = list.getJSONObject(i);
+                String reporter = (String)(onenews.get("fxs"));
+                String date = (String)(onenews.get("fbrq"));
+                String title = (String)(onenews.get("title"));
+                String reportUrl = "http://bbs.qq.com/finance/"+(String)(onenews.get("id"))+".html";
+                String org = (String)(onenews.get("jgjc"));
 
-        @Override
-        public List<Stock> call() throws Exception {
-            System.out.println("线程开始");
-            List<Stock> results = new ArrayList<Stock>();
-            for (String stockId : stockIds) {
-                results.add(getStock(stockId));
+
+
+                Report report =new Report(stockId,title,date,"公司报告",org,reporter,reportUrl);
+
+//                System.out.println(report.toString());
+
+
+                reports.add(report);
             }
-            System.out.println("线程结束");
-            return results;
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return reports;
     }
 
-    private static <T> List<List<T>> subList(List<T> list, int blockSize) {
-        List<List<T>> lists = new ArrayList<List<T>>();
-        if (list != null && blockSize > 0) {
-            int listSize = list.size();
-            if (listSize <= blockSize) {
-                lists.add(list);
-                return lists;
-            }
-            int batchSize = listSize / blockSize;
-            int remain = listSize % blockSize;
-            for (int i = 0; i < batchSize; i++) {
-                int fromIndex = i * blockSize;
-                int toIndex = fromIndex + blockSize;
 
-                lists.add(list.subList(fromIndex, toIndex));
-            }
-            if (remain > 0) {
 
-                lists.add(list.subList(listSize - remain, listSize));
-            }
-        }
-        return lists;
-    }
 
 
 }

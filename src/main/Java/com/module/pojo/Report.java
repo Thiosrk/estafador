@@ -10,29 +10,21 @@ public class Report {
     private String title;// 标题
     private String date;  // 日期
 
-    private String type; //评级类别
+    private String type; //报告类型：公司报告，行业报告
 
     private String org; //机构名称
     private String reporter;//研究员
     private String reportUrl; //研报正文链接
 
 
-
-    /**
-     * 研报正文显示的内容
-     */
-
-    private String mTitle;
-    private String mDetail;
-    private String mContent;
-
-
-    public String printReportDetail() {
-        return "Report{" +
-                "mTitle='" + mTitle + '\'' +
-                ", mDetail='" + mDetail + '\'' +
-                ", mContent='" + mContent + '\'' +
-                '}';
+    public Report(String stockId, String title, String date, String type, String org, String reporter, String reportUrl) {
+        this.stockId = stockId;
+        this.title = title;
+        this.date = date;
+        this.type = type;
+        this.org = org;
+        this.reporter = reporter;
+        this.reportUrl = reportUrl;
     }
 
     public String getStockId() {
@@ -43,29 +35,7 @@ public class Report {
         this.stockId = stockId;
     }
 
-    public String getmTitle() {
-        return mTitle;
-    }
 
-    public void setmTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
-
-    public String getmDetail() {
-        return mDetail;
-    }
-
-    public void setmDetail(String mDetail) {
-        this.mDetail = mDetail;
-    }
-
-    public String getmContent() {
-        return mContent;
-    }
-
-    public void setmContent(String mContent) {
-        this.mContent = mContent;
-    }
 
 
     public String getTitle() {
@@ -126,9 +96,6 @@ public class Report {
                 ", org='" + org + '\'' +
                 ", reporter='" + reporter + '\'' +
                 ", reportUrl='" + reportUrl + '\'' +
-                ", mTitle='" + mTitle + '\'' +
-                ", mDetail='" + mDetail + '\'' +
-                ", mContent='" + mContent + '\'' +
                 '}';
     }
 }
