@@ -37,9 +37,46 @@
             <!-- /. ROW  -->
                     <!--   Kitchen Sink -->
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            XXXXXXXX
-                        </div>
+                       <div class="panel-heading" style="height:100px;">
+                              <div style="height:100%;width:25%;margin-top:1.5%;float:left;">
+                              <span style="font-size:36px;margin-left:20%;margin-top:30%;"><b>价格:12.93</b></span>
+                                  <span class="glyphicon glyphicon-arrow-up"></span>
+                              </div>
+                              <div style="float:left;">
+                                  <table class="table table-striped table-bordered table-hover" style="border:0px;">
+                                      <tbody>
+                                      <tr>
+                                           <th>今开:</th>
+                                           <td>12.88</td>
+                                           <th>最高:</th>
+                                           <td>12.99</td>
+                                           <th>最低:</th>
+                                           <td>11.86</td>
+                                           <th>昨收:</th>
+                                           <td>12.53</td>
+                                          <th>成交量:</th>
+                                          <td>114.35</td>
+                                          <th>成交额:</th>
+                                          <td>1489</td>
+                                      </tr>
+                                      <tr>
+                                          <th>总市值:</th>
+                                          <td>5876</td>
+                                          <th>流通市值:</th>
+                                          <td>5876</td>
+                                          <th>振幅:</th>
+                                          <td>3.35%</td>
+                                          <th>换手率:</th>
+                                          <td>0.45%</td>
+                                          <th>市净率:</th>
+                                          <td>0.548%</td>
+                                          <th>市盈率:</th>
+                                          <td>6.77</td>
+                                      </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover">
