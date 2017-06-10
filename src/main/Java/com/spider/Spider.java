@@ -23,6 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import static java.util.Arrays.asList;
 
 /**
@@ -53,18 +54,17 @@ public class Spider {
          * 用法示例
          */
         //1.多线程获取所有股票信息,由于是网页获取的，都是最新的
-//        spider.getAllStock();
+//        List<Stock> allStocks = spider.getAllStock();
 
         //2.单个获取某股票信息,由于是网页获取的，都是最新的
-//        spider.getStock("sh600015");
+//        Stock stock = spider.getStock("sh600015");
 
-        //3.获得银行行业的信息 TODO:cannot
-//        Bank bank = spider.getBank();
-//        bank.setReports(spider.getBankReports());
+        //3.获得银行行业的信息
+//        List<Report> bankReports = spider.getBankReports(1);
+
 
         //4.获得某股票的研究报告
-        spider.getReports("sh600000",2);
-
+//        List<Report> stockReports = spider.getReports("sh600000");
 
 
     }
@@ -232,58 +232,122 @@ public class Spider {
     }
 
 
+    public List<Report> getReports(String stockCode) {
+        String baseurl;
+        int page = 1;
+        boolean loop = true;
 
-    public List<Report> getReports(String stockCode,int page) {
-        String url;
-        if(stockCode.equals("bank")){
-            url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=3&industry=%D2%F8%D0%D0%D0%D0%D2%B5&symbol=&p=" + page;
-        }else{
-            url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?symbol="
-                    + stockCode + "&t1=all&p="+page;
-        }
+
+        baseurl = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?symbol="
+                + stockCode + "&t1=all&p=";
+
+
 
 
         List<Report> reports = new ArrayList<Report>();
-        try {
-            Document doc = Jsoup.connect(url).get();
 
-            Element tbody = doc.getElementsByTag("tbody").get(0);
+        while (loop) {
+            String url = baseurl + page;
+            System.out.println(url);
+            try {
+                Document doc = Jsoup.connect(url).get();
 
-            Elements trs = tbody.getElementsByTag("tr");
-            for (int i = 2; i < trs.size(); i++) {
-                Element tr = trs.get(i);
-                Elements tds = tr.getElementsByTag("td");
-                ArrayList<String> strings = new ArrayList<String>();
-                for (Element td : tds) {
-                    strings.add(td.text());
+
+                if (!doc.select("body > div > div.main > table > tbody > tr:nth-child(3) > td").text().equals("没有找到相关内容..")) {
+                    System.out.println("1----");
+                    Element tbody = doc.getElementsByTag("tbody").get(0);
+
+                    Elements trs = tbody.getElementsByTag("tr");
+                    for (int i = 2; i < trs.size(); i++) {
+                        Element tr = trs.get(i);
+                        Elements tds = tr.getElementsByTag("td");
+                        ArrayList<String> strings = new ArrayList<String>();
+                        for (Element td : tds) {
+                            strings.add(td.text());
+                        }
+                        Element link = tr.select("a[href]").first();
+                        String linkString = link.attr("href");
+
+                        Report report = new Report();
+
+                        report.setTitle(strings.get(1));
+                        report.setType(strings.get(2));
+                        report.setDate(strings.get(3));
+                        report.setOrg(strings.get(4));
+                        report.setReporter(strings.get(5));
+                        report.setReportUrl(linkString);
+
+
+                        System.out.println(report.toString());
+                        report = getReportDetail(report);
+                        reports.add(report);
+
+                    }
+
+                    page++;
+
+                } else {
+                    loop = false;
                 }
-                Element link = tr.select("a[href]").first();
-                String linkString = link.attr("href");
-
-                Report report =new Report();
-                report.setId(strings.get(0));
-                report.setTitle(strings.get(1));
-                report.setRateType(strings.get(2));
-                report.setDate(strings.get(3));
-                report.setOrg(strings.get(4));
-                report.setReporter(strings.get(5));
-                report.setReportUrl(linkString);
 
 
-                System.out.println(report.toString());
-                report =getReportDetail(report);
-                reports.add(report);
-//                System.out.println(report.getmContent());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
 
         return reports;
     }
 
-    private Report getReportDetail(Report report){
+    public  List<Report> getBankReports(int i){
+        // 定义即将访问的链接
+        String url = "http://vip.stock.finance.sina.com.cn/q/go.php/vReport_List/kind/search/index.phtml?t1=3&industry=%D2%F8%D0%D0%D0%D0%D2%B5&symbol=&p=" + i;
+        ArrayList<Report> bankReports = new ArrayList<Report>();
+        try {
+
+
+            WebClient webClient = getWebClient();
+            HtmlPage page = webClient.getPage(url);
+            String pageXml = page.asXml();
+
+            DomNodeList<DomNode> trs = page.querySelectorAll("body > div > div.main > table > tbody > tr");
+            for(int j=2;j<trs.size();j++){
+                DomNode tr = trs.get(j);
+                DomNodeList<DomNode> tds = tr.querySelectorAll("td");
+                String title =tds.get(1).asText();
+                String type =tds.get(2).asText();
+                String date =tds.get(3).asText();
+                String org =tds.get(4).asText();
+                String reporter =tds.get(5).asText();
+
+                String reportUrl =tds.get(1).querySelector("a").getAttributes().getNamedItem("href").getNodeValue();
+                Report report = new Report();
+
+                report.setTitle(title);
+                report.setType(type);
+                report.setDate(date);
+                report.setOrg(org);
+                report.setReporter(reporter);
+                report.setReportUrl(reportUrl);
+
+                report = getReportDetail(report);
+                System.out.println(report.toString());
+
+                bankReports.add(report);
+            }
+
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return bankReports;
+    }
+
+    private Report getReportDetail(Report report) {
 
         try {
             Document doc = Jsoup.connect(report.getReportUrl()).get();
@@ -314,10 +378,6 @@ public class Spider {
         return report;
 
     }
-
-
-
-
 
 
     private WebClient getWebClient() {

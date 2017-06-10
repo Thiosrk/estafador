@@ -8,8 +8,9 @@ public class Report {
     private String id;//序号
     private String title;// 标题
     private String date;  // 日期
-    private String rateType; //评级类别
-    private String rateChange; //评级变动
+
+    private String type; //评级类别
+
     private String org; //机构名称
     private String reporter;//研究员
     private String reportUrl; //研报正文链接
@@ -81,20 +82,12 @@ public class Report {
         this.date = date;
     }
 
-    public String getRateType() {
-        return rateType;
+    public String getType() {
+        return type;
     }
 
-    public void setRateType(String rateType) {
-        this.rateType = rateType;
-    }
-
-    public String getRateChange() {
-        return rateChange;
-    }
-
-    public void setRateChange(String rateChange) {
-        this.rateChange = rateChange;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getOrg() {
@@ -121,20 +114,19 @@ public class Report {
         this.reportUrl = reportUrl;
     }
 
-
     @Override
     public String toString() {
         return "Report{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", date='" + date + '\'' +
-                ", rateType='" + rateType + '\'' +
-                ", rateChange='" + rateChange + '\'' +
+                ", type='" + type + '\'' +
                 ", org='" + org + '\'' +
                 ", reporter='" + reporter + '\'' +
                 ", reportUrl='" + reportUrl + '\'' +
+                ", mTitle='" + mTitle + '\'' +
+                ", mDetail='" + mDetail + '\'' +
+                ", mContent='" + mContent + '\'' +
                 '}';
     }
-
-
 }
