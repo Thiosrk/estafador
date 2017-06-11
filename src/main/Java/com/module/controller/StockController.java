@@ -1,8 +1,6 @@
 package com.module.controller;
 
-import com.module.pojo.Echartskstock;
-import com.module.pojo.Kstock;
-import com.module.pojo.Report;
+import com.module.pojo.*;
 import com.module.service.KstockService;
 import com.module.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import com.module.pojo.Stock;
 
 import java.util.*;
 
@@ -38,6 +34,7 @@ public class StockController {
     public String Stockspecific(HttpServletRequest request, Model model,@PathVariable("stockid")String stockid){
         List<Kstock> kstocks = kstockService.selectByCode(stockid);
         List<Echartskstock> echartskstocks =new ArrayList<Echartskstock>();
+        Bank bank=stockService.getBank();
         List<Report> reportlist1=stockService.getXLReports(stockid);
         List<Report> reportlist2=stockService.getTCReports(stockid);
         Stock stock=stockService.getStock(stockid);
@@ -46,6 +43,7 @@ public class StockController {
         }
         model.addAttribute("stock", stock);
         model.addAttribute("kstock", kstocks.get(0));
+        model.addAttribute("bank", bank);
         model.addAttribute("echartstock", echartskstocks);
         model.addAttribute("reportlist1", reportlist1);
         model.addAttribute("reportlist2", reportlist2);
