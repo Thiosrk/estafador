@@ -66,7 +66,7 @@
             <div class="row">
                 <div class="col-md-6" style="margin-left: 20%">
                      <!--    Hover Rows  -->
-                    <div class="panel panel-default"  >
+                    <div class="panel panel-default"   style="width: 800px;">
                         <div class="panel-heading">
                             <span  style="margin-left: 40%">股票涨跌榜</span>
                         </div>
@@ -75,7 +75,7 @@
 
                                 <div id="container">
                                     <!-- 定义一个表格元素 -->
-                                    <table id="table_id_example" class="display">
+                                    <table id="table_id_example" class="display" >
                                         <thead>
                                         <tr>
                                             <th>股票代码</th>
@@ -96,7 +96,7 @@
                                                 <tr onclick="function test() {
                                                         window.location.href='<%=basePath%>Stock/Stockspecific/'+${stock.id};
                                                         }">
-                                                    <td>${stock.id}</td>
+                                                    <td><a href="<%=basePath%>Stock/Stockspecific/${stock.id}">${stock.id}</a></td>
                                                     <td>${stock.name}</td>
                                                     <td>${stock.price}</td>
                                                     <td>${stock.change}</td>
@@ -105,7 +105,7 @@
                                                     <td>${stock.open}</td>
                                                     <td>${stock.high}</td>
                                                     <td>${stock.low}</td>
-                                                    <td>${stock.tradeVol}  <a href="<%=basePath%>Stock/Stockspecific/${stock.id}">123</a></td>
+                                                    <td>${stock.tradeVol}</td>
                                                 </tr>
                                             </c:forEach>
                                         </c:if>
