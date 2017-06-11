@@ -483,7 +483,14 @@ public class Spider {
             JSONArray list = object.getJSONArray("list");
             for (int i = 0; i < list.length(); i++) {
                 JSONObject newsObject = list.getJSONObject(i);
-                News news = new News(newsObject.getString("title"),
+                String title;
+                if(newsObject.getString("title").equals("")){
+
+                    title="公司公告";
+                }else {
+                    title=newsObject.getString("title");
+                }
+                News news = new News(title,
                         newsObject.getString("description"), newsObject.getString("timeBefore"));
                 System.out.println(news.toString());
                 newsList.add(news);
