@@ -7,16 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>首页</title>
-
-    <!-- BOOTSTRAP STYLES-->
-    <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet" />
     <style>
         .jumbotron{
-            background:url(WEB-INF/view/statics/img/jumu.jpeg);
+            background-image:url(/images/jumu.jpeg);
             width: auto;
             height: auto;
         }
     </style>
+    <!-- BOOTSTRAP STYLES-->
+    <link href="/css/bootstrap.css" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -26,9 +25,9 @@
 </head>
 
 <body>
-
 <div class="jumbotron" style="margin: 1.5%;padding: 6%">
     <h1>Welcome to estafador</h1>
+
     <br />
     <p>股票交易平台</p>
     <br />

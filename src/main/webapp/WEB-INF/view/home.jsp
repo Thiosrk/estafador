@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col-md-6" style="margin-left: 20%">
                      <!--    Hover Rows  -->
-                    <div class="panel panel-default" >
+                    <div class="panel panel-default"  >
                         <div class="panel-heading">
                             <span  style="margin-left: 40%">股票涨跌榜</span>
                         </div>

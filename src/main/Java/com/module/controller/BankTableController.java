@@ -27,5 +27,8 @@ public class BankTableController {
         model.addAttribute("bankstocklist", bankstock);
         return "home";
     }
-
+    @RequestMapping("/Index")
+    public String Index(HttpServletRequest request, Model model){
+        return "index";
+    }
 }
