@@ -132,9 +132,9 @@
                                     <!-- Nav tabs -->
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">K线图表</a></li>
-                                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">论坛评论</a></li>
+                                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">公司研报</a></li>
                                         <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">预测分析</a></li>
-                                        <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">公司简介</a></li>
+
                                     </ul>
 
                                     <!-- Tab panes -->
@@ -363,6 +363,33 @@
                                         </div>
                                         <div role="tabpanel" class="tab-pane" id="profile">
                                             <!--论坛评论-->
+                                            <div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-bordered table-hover">
+                                                        <tbody>
+                                                        <tr>
+                                                            <th>研报标题</th>
+                                                            <th>日期</th>
+                                                            <th>报告类型</th>
+                                                            <th>机构名称</th>
+                                                            <th>研究员</th>
+                                                            <th>研报正文链接</th>
+                                                        </tr>
+                                                        <c:if test="${!empty reportlist1 }">
+                                                        <c:forEach items="${reportlist1}" var="report1">
+                                                        <tr>
+                                                            <td>${report1.title}</td>
+                                                            <td>${report1.date}</td>
+                                                            <td>${report1.type}</td>
+                                                            <td>${report1.org}</td>
+                                                            <td>${report1.reporter}</td>
+                                                            <td><a href="${report1.reportUrl}">链接<a></td>
+                                                        </tr>
+                                                        </c:forEach>
+                                                        </c:if>
+                                                        </tbody>
+                                                    </table>
+                                            </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane" id="messages">
                                             <!--预测分析-->
