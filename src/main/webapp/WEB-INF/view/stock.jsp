@@ -33,6 +33,9 @@
     <script src="<c:url value="/js/custom.js"/>"></script>
 
     <script src="<c:url value="/js/echarts.min.js"/>"></script>
+
+    <%--onclick="location.href='javascript:history.go(-1);'"--%>
+
 </head>
 <body>
 
@@ -47,10 +50,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">${stock.name}</a>
+                <a class="navbar-brand">${stock.name}</a>
             </div>
             <div class="header-right">
-                <a href="login.html" class="btn btn-danger" title="Logout"><i class="fa"
+                <a onclick="location.href='javascript:history.go(-1);'" class="btn btn-danger" title="Logout"><i class="fa"
                                                                               style="width: 100px;">返回</i></a>
 
             </div>
@@ -60,12 +63,17 @@
         <!--   Kitchen Sink -->
         <div class="panel panel-default">
             <div class="panel-heading" style="height:140px;">
-                <div style="height:100%;width:40%;margin-top:1.5%;float:left;">
-                    <span style="font-size:36px;margin-top:50%;margin-left: 20%;"><b>价格:${stock.close}</b></span>
+                <div style="height:100%;margin-left:20px;margin-right:30px;margin-top:45px;float:left;">
+                    <script type="text/javascript">
+                        var elements=${stock.close};
+                        var col2=${stock.close}>0?"red":"green";
+                        document.write("<span style='font-size:40px;color:"+col2+"'>"+"<b>价格:${stock.close}</b>"+"</span>");
+                    </script>
+                    <%--<span style="font-size:36px;margin-top:50%;margin-left: 20%;"><b>价格:${stock.close}</b></span>--%>
                     <%--<span class="glyphicon glyphicon-arrow-up"></span>--%>
                 </div>
                 <div style="float:left;">
-                    <table class="table table-striped table-bordered table-hover" style="border:none;"  rules=none >
+                    <table class="table table-striped table-bordered table-hover" style="border:none;width: 800px;" >
                         <tbody>
                         <tr>
                             <th>今开:</th>
@@ -512,17 +520,16 @@
                                             <th>报告类型</th>
                                             <th>机构名称</th>
                                             <th>研究员</th>
-                                            <th>研报正文链接</th>
                                         </tr>
                                         <c:if test="${!empty reportlist1 }">
                                             <c:forEach items="${reportlist1}" var="report1">
                                                 <tr>
-                                                    <td>${report1.title}</td>
+                                                    <td><a href="${report1.reportUrl}">${report1.title}<a></td>
                                                     <td>${report1.date}</td>
                                                     <td>${report1.type}</td>
                                                     <td>${report1.org}</td>
                                                     <td>${report1.reporter}</td>
-                                                    <td><a href="${report1.reportUrl}">网页链接<a></td>
+
                                                 </tr>
                                             </c:forEach>
                                         </c:if>
@@ -542,17 +549,15 @@
                                             <th>报告类型</th>
                                             <th>机构名称</th>
                                             <th>研究员</th>
-                                            <th>研报正文链接</th>
                                         </tr>
                                         <c:if test="${!empty reportlist2 }">
                                             <c:forEach items="${reportlist2}" var="report2">
                                                 <tr>
-                                                    <td>${report2.title}</td>
+                                                    <td><a href="${report2.reportUrl}">${report2.title}<a></td>
                                                     <td>${report2.date}</td>
                                                     <td>${report2.type}</td>
                                                     <td>${report2.org}</td>
                                                     <td>${report2.reporter}</td>
-                                                    <td><a href="${report2.reportUrl}">网页链接<a></td>
                                                 </tr>
                                             </c:forEach>
                                         </c:if>
@@ -608,10 +613,10 @@
                                         <c:if test="${!empty discusslist }">
                                             <c:forEach items="${discusslist}" var="discuss">
                                                <div>
-                                                    <h3><b>标题:${discuss.title}</b></h3>
-                                                    <h4>作者:${discuss.username}<a href="${discuss.userUrl}">主页</a></h4>
+                                                    <h4><a href="${discuss.discussUrl}">查看详情 ${discuss.title}</a></h4>
+                                                    <h5><a href="${discuss.userUrl}">${discuss.username}</a></h5>
                                                     <h5>${discuss.datetime}</h5>
-                                                    <p>${discuss.description}<a href="${discuss.discussUrl}">详情</a></p>
+                                                    <p>${discuss.description}</p>
                                                      <hr />
                                                </div>
                                             </c:forEach>
