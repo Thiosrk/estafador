@@ -1,8 +1,6 @@
 package com.module.service;
 
-import com.module.pojo.Bank;
-import com.module.pojo.Report;
-import com.module.pojo.Stock;
+import com.module.pojo.*;
 
 import java.util.List;
 
@@ -14,6 +12,9 @@ public interface StockService  {
     List<Stock> getAllStocks();
     List<Report> getXLReports(String stockCode);
     List<Report> getTCReports(String stockId);
+    List<News> getNews(String stockId, int page);
+    List<News> getNotices(String stockId, int page);
+    List<Discuss> getDiscusses(String stockId, int page, String sort);
     Bank getBank();
     List<Report> getBankReports(int i);
 }

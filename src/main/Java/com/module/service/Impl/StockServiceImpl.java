@@ -1,8 +1,6 @@
 package com.module.service.Impl;
 
-import com.module.pojo.Bank;
-import com.module.pojo.Report;
-import com.module.pojo.Stock;
+import com.module.pojo.*;
 import com.module.service.StockService;
 import com.spider.Spider;
 import org.springframework.stereotype.Service;
@@ -33,6 +31,21 @@ public class StockServiceImpl implements StockService{
     @Override
     public List<Report> getTCReports(String stockId) {
         return spider.getTCReports(stockId);
+    }
+
+    @Override
+    public List<News> getNews(String stockId, int page) {
+        return spider.getNews(stockId,page);
+    }
+
+    @Override
+    public List<News> getNotices(String stockId, int page) {
+        return spider.getNotices(stockId,page);
+    }
+
+    @Override
+    public List<Discuss> getDiscusses(String stockId, int page, String sort) {
+        return spider.getDiscusses(stockId,page,sort);
     }
 
     @Override

@@ -37,6 +37,10 @@ public class StockController {
         Bank bank=stockService.getBank();
         List<Report> reportlist1=stockService.getXLReports(stockid);
         List<Report> reportlist2=stockService.getTCReports(stockid);
+        List<News> newsList=stockService.getNews(stockid,1);
+        List<News> noticeList=stockService.getNotices(stockid,1);
+        List<Discuss> discussList=stockService.getDiscusses(stockid,1,"time");
+        System.out.println(reportlist2.get(0).getTitle());
         Stock stock=stockService.getStock(stockid);
         for(int i=0;i<kstocks.size();i++){
            echartskstocks.add(new Echartskstock(kstocks.get(i).getCode(), kstocks.get(i).getDate(), Double.valueOf(kstocks.get(i).getOpen()),Double.valueOf(kstocks.get(i).getClose()) ,Double.valueOf( kstocks.get(i).getLow()) , Double.valueOf(kstocks.get(i).getHigh()) ));
@@ -47,6 +51,9 @@ public class StockController {
         model.addAttribute("echartstock", echartskstocks);
         model.addAttribute("reportlist1", reportlist1);
         model.addAttribute("reportlist2", reportlist2);
+        model.addAttribute("newslist", newsList);
+        model.addAttribute("noticelist", noticeList);
+        model.addAttribute("discusslist", discussList);
         return "stock";
     }
 

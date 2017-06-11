@@ -173,6 +173,12 @@
                         </li>
                         <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">腾讯研报</a>
                         </li>
+                        <li role="presentation"><a href="#news" aria-controls="news" role="tab" data-toggle="tab">新闻消息</a>
+                        </li>
+                        <li role="presentation"><a href="#notices" aria-controls="notices" role="tab" data-toggle="tab">公告消息</a>
+                        </li>
+                        <li role="presentation"><a href="#discuss" aria-controls="discuss" role="tab" data-toggle="tab">论坛讨论</a>
+                        </li>
                     </ul>
 
                     <!-- Tab panes -->
@@ -555,7 +561,78 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div role="tabpanel" class="tab-pane" id="news">
+                            <div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <th>新闻标题</th>
+                                            <th>日期</th>
+                                            <th>消息内容</th>
+                                        </tr>
+                                        <c:if test="${!empty newslist }">
+                                            <c:forEach items="${newslist}" var="news">
+                                                <tr>
+                                                    <td>${news.title}</td>
+                                                    <td>${news.datetime}</td>
+                                                    <td>${news.intro}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:if>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="notices">
+                            <div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <th>日期</th>
+                                            <th>消息内容</th>
+                                        </tr>
+                                        <c:if test="${!empty noticelist }">
+                                            <c:forEach items="${noticelist}" var="notice">
+                                                <tr>
+                                                    <td>${notice.datetime}</td>
+                                                    <td>${notice.intro}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:if>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="discuss">
+                            <div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                        <tr>
+                                            <th>讨论标题</th>
+                                            <th>日期</th>
+                                            <th>发起人</th>
+                                            <th>讨论内容</th>
+                                        </tr>
+                                        <c:if test="${!empty discusslist }">
+                                            <c:forEach items="${discusslist}" var="discuss">
+                                                <tr>
+                                                    <td>${discuss.title}</td>
+                                                    <td>${discuss.datetime}</td>
+                                                    <td>${discuss.username}<br><a href="${discuss.userUrl}">主页</a></td>
+                                                    <td>${discuss.description}<a href="${discuss.discussUrl}">详情</a></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:if>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!--</div>-->
 

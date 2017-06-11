@@ -65,4 +65,20 @@ public class Discuss {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getUserUrl() {
+        return userUrl;
+    }
+
+    public void setUserUrl(String userUrl) {
+        this.userUrl = userUrl;
+    }
+
+    public String getDiscussUrl() {
+        return discussUrl;
+    }
+
+    public void setDiscussUrl(String discussUrl) {
+        this.discussUrl = discussUrl;
+    }
 }
