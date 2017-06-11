@@ -52,6 +52,8 @@ public class Stock {
 
     private String qr;//量比
 
+    private String swing;//振幅
+
     private String datetime; //日期时间
 
     private String netAsset; //净资产
@@ -96,7 +98,7 @@ public class Stock {
                  String fallStaying, String change, String changeP, String close, String open,
                  String high, String low, String tradeVol, String tradeAmount,
                  String totalValue, String freeValue,
-                 String tr, String pb, String pe, String qr) {
+                 String tr, String pb, String pe, String qr,String swing) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -116,6 +118,7 @@ public class Stock {
         this.pb = pb;
         this.pe = pe;
         this.qr = qr;
+        this.swing=swing;
 
     }
 
@@ -383,7 +386,16 @@ public class Stock {
         this.rank_roe = rank_roe;
     }
 
-    public String printBasicInfo(){
+    public String getSwing() {
+        return swing;
+    }
+
+    public void setSwing(String swing) {
+        this.swing = swing;
+    }
+
+    @Override
+    public String toString() {
         return "Stock{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
@@ -404,19 +416,14 @@ public class Stock {
                 ", pb='" + pb + '\'' +
                 ", pe='" + pe + '\'' +
                 ", qr='" + qr + '\'' +
+                ", swing='" + swing + '\'' +
                 ", datetime='" + datetime + '\'' +
                 ", netAsset='" + netAsset + '\'' +
                 ", netMargin='" + netMargin + '\'' +
                 ", gpr='" + gpr + '\'' +
                 ", npr='" + npr + '\'' +
                 ", roe='" + roe + '\'' +
-                '}';
-    }
-
-
-    public String printRankInfo() {
-        return "Stock{" +
-                "rank_totalValue='" + rank_totalValue + '\'' +
+                ", rank_totalValue='" + rank_totalValue + '\'' +
                 ", rank_netAsset='" + rank_netAsset + '\'' +
                 ", rank_netMargin='" + rank_netMargin + '\'' +
                 ", rank_pe='" + rank_pe + '\'' +
@@ -426,4 +433,6 @@ public class Stock {
                 ", rank_roe='" + rank_roe + '\'' +
                 '}';
     }
+
+
 }

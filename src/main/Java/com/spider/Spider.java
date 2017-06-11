@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -55,7 +56,8 @@ public class Spider {
          * 用法示例
          */
         //1.获取所有股票最新信息
-//        List<Stock> allStocks = spider.getAllStocks();
+        //[数据来源：金融界http://summary.jrj.com.cn/hybk/400128968.shtml?q=cn|s|bk400128968&c=m&n=hqa&o=pl,d&p=1030]
+        List<Stock> allStocks = spider.getAllStocks();
 
         //2.单个获取某股票最新信息
 //        Stock stock = spider.getStock("sh600015");
@@ -83,13 +85,79 @@ public class Spider {
 
 
     public List<Stock> getAllStocks() {
+        String url ="http://q.jrjimg.cn/?q=cn|s|bk400128968&c=m&n=hqa&o=pl,d&p=1030&_dc=1497160942162";
 
         List<Stock> stocks = new ArrayList<Stock>();
 
-        for(String stockId :STOCKIDs){
-            Stock stock =getStock(stockId);
-            stocks.add(stock);
+        BufferedReader br = null;
+        String result = null;
+        StringBuilder sbuilder = new StringBuilder();
+
+
+
+
+
+        try {
+            URL getUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) getUrl.openConnection();
+            conn.setRequestMethod("GET");
+
+
+            conn.connect();
+
+            InputStream input = conn.getInputStream();
+            br = new BufferedReader(new InputStreamReader(input, "GBK"));
+
+            String tmpRead = null;
+            while ((tmpRead = br.readLine()) != null) {
+                sbuilder.append(tmpRead);
+                sbuilder.append("\n");
+            }
+
+            br.close();
+            result = sbuilder.toString().substring(8);
+//            System.out.println(result);
+
+            conn.disconnect();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        //parse String result
+        if(result!=null){
+            JSONObject object=new JSONObject(result);
+            JSONArray hqData =object.getJSONArray("HqData");
+            for(int i=0;i<hqData.length();i++){
+                JSONArray data =hqData.getJSONArray(i);
+                Stock stock =new Stock();
+                stock.setId(data.getString(0));
+                stock.setName(data.getString(2));
+                stock.setClose(String.valueOf(data.getDouble(3)));
+                stock.setOpen(String.valueOf(data.getDouble(5)));
+                stock.setHigh(String.valueOf(data.getDouble(6)));
+                stock.setLow(String.valueOf(data.getDouble(7)));
+                stock.setPrice(String.valueOf(data.getDouble(8)));
+                stock.setTradeVol(String.valueOf(data.getDouble(9))+"手");
+                stock.setTotalValue(String.valueOf(data.getDouble(10))+"万");
+                stock.setChange(String.valueOf(data.getDouble(11)));
+                stock.setChangeP(String.valueOf(data.getDouble(12)));
+                stock.setSwing(String.valueOf(data.getDouble(13)));
+                stock.setChangeP(String.valueOf(data.getDouble(14)));
+                stock.setTr(String.valueOf(data.getDouble(15)));
+                stock.setPe(String.valueOf(data.getDouble(21)));
+
+
+
+//                System.out.println(stock.toString());
+                stocks.add(stock);
+            }
+        }
+
+
+
+
         return  stocks;
 
 
@@ -144,7 +212,7 @@ public class Spider {
                     infos.get(11), infos.get(0), infos.get(2),
                     infos.get(13), infos.get(4), infos.get(5),
                     infos.get(18), infos.get(7), infos.get(12),
-                    infos.get(19), infos.get(8), infos.get(17)
+                    infos.get(19), infos.get(8), infos.get(17),infos.get(16)
             );
 
             //从东方财富网
