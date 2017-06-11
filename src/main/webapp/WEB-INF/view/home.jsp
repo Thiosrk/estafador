@@ -16,7 +16,7 @@
     <!-- BOOTSTRAP STYLES-->
     <link href="/css/bootstrap.css" rel="stylesheet" />
     <!-- FONTAWESOME STYLES-->
-    <link href="/css/font-awesome.css"/>" rel="stylesheet" />
+    <link href="/css/font-awesome.css>" rel="stylesheet" />
     <!--CUSTOM BASIC STYLES-->
     <link href="/css/basic.css" rel="stylesheet" />
     <!--CUSTOM MAIN STYLES-->

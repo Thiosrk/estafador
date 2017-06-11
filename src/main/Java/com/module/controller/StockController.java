@@ -3,6 +3,7 @@ package com.module.controller;
 import com.module.pojo.*;
 import com.module.service.KstockService;
 import com.module.service.StockService;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +34,7 @@ public class StockController {
     @RequestMapping("/Stockspecific/{stockid}")
     public String Stockspecific(HttpServletRequest request, Model model,@PathVariable("stockid")String stockid){
         List<Kstock> kstocks = kstockService.selectByCode(stockid);
-        List<Echartskstock> echartskstocks =new ArrayList<Echartskstock>();
+//        List<Echartskstock> echartskstocks =new ArrayList<Echartskstock>();
         Bank bank=stockService.getBank();
         List<Report> reportlist1=stockService.getXLReports(stockid);
         List<Report> reportlist2=stockService.getTCReports(stockid);
@@ -42,13 +43,28 @@ public class StockController {
         List<Discuss> discussList=stockService.getDiscusses(stockid,1,"time");
         System.out.println(reportlist2.get(0).getTitle());
         Stock stock=stockService.getStock(stockid);
-        for(int i=0;i<kstocks.size();i++){
-           echartskstocks.add(new Echartskstock(kstocks.get(i).getCode(), kstocks.get(i).getDate(), Double.valueOf(kstocks.get(i).getOpen()),Double.valueOf(kstocks.get(i).getClose()) ,Double.valueOf( kstocks.get(i).getLow()) , Double.valueOf(kstocks.get(i).getHigh()) ));
+//        for(int i=0;i<kstocks.size();i++){
+//           echartskstocks.add(new Echartskstock(kstocks.get(i).getCode(), kstocks.get(i).getDate(), Double.valueOf(kstocks.get(i).getOpen()),Double.valueOf(kstocks.get(i).getClose()) ,Double.valueOf( kstocks.get(i).getLow()) , Double.valueOf(kstocks.get(i).getHigh()) ));
+//        }
+
+        JSONArray kstocksjson = new JSONArray();
+        for(int i=0;i<kstocks.size();++i){
+            JSONArray tmp = new JSONArray();
+            tmp.put(kstocks.get(i).getDate());
+            tmp.put(Double.valueOf(kstocks.get(i).getOpen()));
+            tmp.put(Double.valueOf(kstocks.get(i).getClose()));
+            tmp.put(Double.valueOf(kstocks.get(i).getLow()));
+            tmp.put(Double.valueOf(kstocks.get(i).getHigh()));
+//            JSONObject tmp = new JSONObject(echartskstocks.get(i));
+//            kstocksjson.accumulate("data",tmp);
+            kstocksjson.put(tmp);
         }
+
+
         model.addAttribute("stock", stock);
-        model.addAttribute("kstock", kstocks.get(0));
+//        model.addAttribute("kstock", kstocks.get(0));
         model.addAttribute("bank", bank);
-        model.addAttribute("echartstock", echartskstocks);
+        model.addAttribute("kstocksjson", kstocksjson);
         model.addAttribute("reportlist1", reportlist1);
         model.addAttribute("reportlist2", reportlist2);
         model.addAttribute("newslist", newsList);

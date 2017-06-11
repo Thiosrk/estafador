@@ -173,9 +173,9 @@
                         </li>
                         <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">腾讯研报</a>
                         </li>
-                        <li role="presentation"><a href="#news" aria-controls="news" role="tab" data-toggle="tab">新闻消息</a>
-                        </li>
                         <li role="presentation"><a href="#notices" aria-controls="notices" role="tab" data-toggle="tab">公告消息</a>
+                        </li>
+                        <li role="presentation"><a href="#news" aria-controls="news" role="tab" data-toggle="tab">新闻消息</a>
                         </li>
                         <li role="presentation"><a href="#discuss" aria-controls="discuss" role="tab" data-toggle="tab">论坛讨论</a>
                         </li>
@@ -194,15 +194,15 @@
 
                                     // 指定图表的配置项和数据
                                     // 数据意义：开盘(open)，收盘(close)，最低(lowest)，最高(highest)
-                                    var data0 = splitData(${echartstock});
+                                    var data0 = splitData(${kstocksjson});
 
 
                                     function splitData(rawData) {
                                         var categoryData = [];
                                         var values = []
-                                        for (var i = 0; i < rawData.size(); i++) {
-                                            categoryData.push(rawData.get(i).splice(0, 1)[0]);
-                                            values.push(rawData.get(i))
+                                        for (var i = 0; i < rawData.length; i++) {
+                                            categoryData.push(rawData[i].splice(0, 1)[0]);
+                                            values.push(rawData[i])
                                         }
                                         return {
                                             categoryData: categoryData,
@@ -221,17 +221,17 @@
                                             for (var j = 0; j < dayCount; j++) {
                                                 sum += data0.values[i - j][1];
                                             }
-                                            result.push(sum / dayCount);
+                                            result.push((sum / dayCount).toFixed(2));
                                         }
                                         return result;
                                     }
 
 
                                     option = {
-                                        title: {
-                                            text: ${echartstock.get(i).getCode()},
-                                            left: 0
-                                        },
+                                        <%--title: {--%>
+                                            <%--text: ${echartstock.get(i).getCode()},--%>
+                                            <%--left: 0--%>
+                                        <%--},--%>
                                         tooltip: {
                                             trigger: 'axis',
                                             axisPointer: {
@@ -266,14 +266,14 @@
                                         dataZoom: [
                                             {
                                                 type: 'inside',
-                                                start: 50,
+                                                start: 95,
                                                 end: 100
                                             },
                                             {
                                                 show: true,
                                                 type: 'slider',
                                                 y: '90%',
-                                                start: 50,
+                                                start: 95,
                                                 end: 100
                                             }
                                         ],
@@ -564,24 +564,18 @@
                         <div role="tabpanel" class="tab-pane" id="news">
                             <div>
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <tbody>
-                                        <tr>
-                                            <th>新闻标题</th>
-                                            <th>日期</th>
-                                            <th>消息内容</th>
-                                        </tr>
+
                                         <c:if test="${!empty newslist }">
                                             <c:forEach items="${newslist}" var="news">
-                                                <tr>
-                                                    <td>${news.title}</td>
-                                                    <td>${news.datetime}</td>
-                                                    <td>${news.intro}</td>
-                                                </tr>
+                                                <div>
+                                                    <h3><b>${news.title}</b></h3>
+                                                    <h5>${news.datetime}</h5>
+                                                    <p>${news.intro}</p>
+                                                    <hr />
+                                                </div>
                                             </c:forEach>
                                         </c:if>
-                                        </tbody>
-                                    </table>
+
                                 </div>
                             </div>
                         </div>
@@ -610,26 +604,19 @@
                         <div role="tabpanel" class="tab-pane" id="discuss">
                             <div>
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered table-hover">
-                                        <tbody>
-                                        <tr>
-                                            <th>讨论标题</th>
-                                            <th>日期</th>
-                                            <th>发起人</th>
-                                            <th>讨论内容</th>
-                                        </tr>
+
                                         <c:if test="${!empty discusslist }">
                                             <c:forEach items="${discusslist}" var="discuss">
-                                                <tr>
-                                                    <td>${discuss.title}</td>
-                                                    <td>${discuss.datetime}</td>
-                                                    <td>${discuss.username}<br><a href="${discuss.userUrl}">主页</a></td>
-                                                    <td>${discuss.description}<a href="${discuss.discussUrl}">详情</a></td>
-                                                </tr>
+                                               <div>
+                                                    <h3><b>标题:${discuss.title}</b></h3>
+                                                    <h4>作者:${discuss.username}<a href="${discuss.userUrl}">主页</a></h4>
+                                                    <h5>${discuss.datetime}</h5>
+                                                    <p>${discuss.description}<a href="${discuss.discussUrl}">详情</a></p>
+                                                     <hr />
+                                               </div>
                                             </c:forEach>
                                         </c:if>
-                                        </tbody>
-                                    </table>
+
                                 </div>
                             </div>
                         </div>

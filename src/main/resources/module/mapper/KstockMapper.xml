@@ -39,7 +39,7 @@
         select
         <include refid="Base_Column_List" />
         from kstock
-        where code = #{code,jdbcType=VARCHAR}
+        where code = #{code,jdbcType=VARCHAR} ORDER BY CONVERT (date,DATE)
     </select>
     <delete id="deleteByCode" parameterType="java.lang.String" >
         <!--
