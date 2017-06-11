@@ -61,7 +61,8 @@
         <div class="panel panel-default">
             <div class="panel-heading" style="height:140px;">
                 <div style="height:100%;width:40%;margin-top:1.5%;float:left;">
-                    <span style="font-size:36px;margin-top:50%;margin-left: 20%;"><b>价格:${stock.close}</b></span>
+                    <span style="font-size:36px;margin-top:40%;margin-left: 20%;"><b>今日价格:${stock.close}</b></span> <br><br>
+                    <span style="font-size:36px;margin-top:60%;margin-left: 20%;"><b>明日预计:${wr.tomorrowclose}</b></span>
                     <%--<span class="glyphicon glyphicon-arrow-up"></span>--%>
                 </div>
                 <div style="float:left;">
@@ -167,8 +168,8 @@
                     <ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
                                                                   data-toggle="tab">K线图表</a></li>
-                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
-                                                   data-toggle="tab">预测分析</a></li>
+                        <%--<li role="presentation"><a href="#messages" aria-controls="messages" role="tab"--%>
+                                                   <%--data-toggle="tab">预测分析</a></li>--%>
                         <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">新浪研报</a>
                         </li>
                         <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">腾讯研报</a>
@@ -407,98 +408,111 @@
                         <div role="tabpanel" class="tab-pane" id="messages">
                                 <!--预测分析-->
                                 <div id="forecast" style="width: 1200px;height:400px;">
-                                    <script type="text/javascript">
-                                        var myChart = echarts.init(document.getElementById('forecast'));
+                                    <table>
+                                        <tr>
+                                            <td>wr指数</td>
+                                            <td>今日收盘</td>
+                                            <td>明日收盘</td>
+                                        </tr>
+                                        <tr>
+                                            <td>${wr.wr2}</td>
+                                            <td>${close}</td>
+                                            <td>${wr.tomorrowclose}</td>
+                                        </tr>
 
-                                        var colors = ['#5793f3', '#d14a61', '#675bba'];
+                                    </table>
+                                    <%--<script type="text/javascript">--%>
+                                        <%--var myChart = echarts.init(document.getElementById('forecast'));--%>
+
+                                        <%--var colors = ['#5793f3', '#d14a61', '#675bba'];--%>
 
 
-                                        option = {
-                                            color: colors,
-                                            title: {
-                                                text: '预测分析',
-                                                left: 0
-                                            },
-                                            tooltip: {
-                                                trigger: 'none',
-                                                axisPointer: {
-                                                    type: 'cross'
-                                                }
-                                            },
-                                            legend: {
-                                                data: ['实际数据', '预测数据']
-                                            },
-                                            grid: {
-                                                top: 70,
-                                                bottom: 50
-                                            },
-                                            xAxis: [
-                                                {
-                                                    type: 'category',
-                                                    axisTick: {
-                                                        alignWithLabel: true
-                                                    },
-                                                    axisLine: {
-                                                        onZero: false,
-                                                        lineStyle: {
-                                                            color: colors[1]
-                                                        }
-                                                    },
-                                                    axisPointer: {
-                                                        label: {
-                                                            formatter: function (params) {
-                                                                return '收盘价  ' + params.value
-                                                                    + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                                                            }
-                                                        }
-                                                    },
-                                                    data: ["2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12"]
-                                                },
-                                                {
-                                                    type: 'category',
-                                                    axisTick: {
-                                                        alignWithLabel: true
-                                                    },
-                                                    axisLine: {
-                                                        onZero: false,
-                                                        lineStyle: {
-                                                            color: colors[0]
-                                                        }
-                                                    },
-                                                    axisPointer: {
-                                                        label: {
-                                                            formatter: function (params) {
-                                                                return '收盘价  ' + params.value
-                                                                    + (params.seriesData.length ? '：' + params.seriesData[0].data : '');
-                                                            }
-                                                        }
-                                                    },
-                                                    data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]
-                                                }
-                                            ],
-                                            yAxis: [
-                                                {
-                                                    type: 'value'
-                                                }
-                                            ],
-                                            series: [
-                                                {
-                                                    name: '实际数据',
-                                                    type: 'line',
-                                                    xAxisIndex: 1,
-                                                    smooth: true,
-                                                    data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
-                                                },
-                                                {
-                                                    name: '预测数据',
-                                                    type: 'line',
-                                                    smooth: true,
-                                                    data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
-                                                }
-                                            ]
-                                        };
-                                        myChart.setOption(option);
-                                    </script>
+                                        <%--option = {--%>
+                                            <%--color: colors,--%>
+                                            <%--title: {--%>
+                                                <%--text: '预测分析',--%>
+                                                <%--left: 0--%>
+                                            <%--},--%>
+                                            <%--tooltip: {--%>
+                                                <%--trigger: 'none',--%>
+                                                <%--axisPointer: {--%>
+                                                    <%--type: 'cross'--%>
+                                                <%--}--%>
+                                            <%--},--%>
+                                            <%--legend: {--%>
+                                                <%--data: ['实际数据', '预测数据']--%>
+                                            <%--},--%>
+                                            <%--grid: {--%>
+                                                <%--top: 70,--%>
+                                                <%--bottom: 50--%>
+                                            <%--},--%>
+                                            <%--xAxis: [--%>
+                                                <%--{--%>
+                                                    <%--type: 'category',--%>
+                                                    <%--axisTick: {--%>
+                                                        <%--alignWithLabel: true--%>
+                                                    <%--},--%>
+                                                    <%--axisLine: {--%>
+                                                        <%--onZero: false,--%>
+                                                        <%--lineStyle: {--%>
+                                                            <%--color: colors[1]--%>
+                                                        <%--}--%>
+                                                    <%--},--%>
+                                                    <%--axisPointer: {--%>
+                                                        <%--label: {--%>
+                                                            <%--formatter: function (params) {--%>
+                                                                <%--return '收盘价  ' + params.value--%>
+                                                                    <%--+ (params.seriesData.length ? '：' + params.seriesData[0].data : '');--%>
+                                                            <%--}--%>
+                                                        <%--}--%>
+                                                    <%--},--%>
+                                                    <%--data: ["2016-1", "2016-2", "2016-3", "2016-4", "2016-5", "2016-6", "2016-7", "2016-8", "2016-9", "2016-10", "2016-11", "2016-12"]--%>
+                                                <%--},--%>
+                                                <%--{--%>
+                                                    <%--type: 'category',--%>
+                                                    <%--axisTick: {--%>
+                                                        <%--alignWithLabel: true--%>
+                                                    <%--},--%>
+                                                    <%--axisLine: {--%>
+                                                        <%--onZero: false,--%>
+                                                        <%--lineStyle: {--%>
+                                                            <%--color: colors[0]--%>
+                                                        <%--}--%>
+                                                    <%--},--%>
+                                                    <%--axisPointer: {--%>
+                                                        <%--label: {--%>
+                                                            <%--formatter: function (params) {--%>
+                                                                <%--return '收盘价  ' + params.value--%>
+                                                                    <%--+ (params.seriesData.length ? '：' + params.seriesData[0].data : '');--%>
+                                                            <%--}--%>
+                                                        <%--}--%>
+                                                    <%--},--%>
+                                                    <%--data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]--%>
+                                                <%--}--%>
+                                            <%--],--%>
+                                            <%--yAxis: [--%>
+                                                <%--{--%>
+                                                    <%--type: 'value'--%>
+                                                <%--}--%>
+                                            <%--],--%>
+                                            <%--series: [--%>
+                                                <%--{--%>
+                                                    <%--name: '实际数据',--%>
+                                                    <%--type: 'line',--%>
+                                                    <%--xAxisIndex: 1,--%>
+                                                    <%--smooth: true,--%>
+                                                    <%--data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]--%>
+                                                <%--},--%>
+                                                <%--{--%>
+                                                    <%--name: '预测数据',--%>
+                                                    <%--type: 'line',--%>
+                                                    <%--smooth: true,--%>
+                                                    <%--data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]--%>
+                                                <%--}--%>
+                                            <%--]--%>
+                                        <%--};--%>
+                                        <%--myChart.setOption(option);--%>
+                                    <%--</script>--%>
                                 </div>
                             </div>
                         <div role="tabpanel" class="tab-pane" id="profile">
