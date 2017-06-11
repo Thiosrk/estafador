@@ -86,6 +86,15 @@ public class Spider {
 //        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "reply");
 
 
+
+        //日K周K月K
+        //type: "1day" 日K  "1week" 周K "1month" 月K
+        //
+//        spider.getKData("sh600000","1day");
+//        spider.getKData("sh600000","1week");
+//        spider.getKData("sh600000","1month");
+
+
     }
 
 
@@ -572,6 +581,60 @@ public class Spider {
             e.printStackTrace();
         }
         return discussList;
+    }
+
+    public void getKData(String stockId,String type){
+        String url="https://xueqiu.com/stock/forchartk/stocklist.json?symbol="+stockId+"&period=&type=normal";
+        try {
+            URL getUrl = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) getUrl.openConnection();
+            conn.setRequestMethod("GET");
+
+            conn.addRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+            conn.addRequestProperty("Cache-Control", "no-cache");
+            conn.addRequestProperty("Connection", "keep-alive");
+            conn.addRequestProperty("Content-type", "text/json");
+            conn.addRequestProperty("Accept-Charset", "utf-8");
+            conn.addRequestProperty("contentType", "utf-8");
+            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; xq_a_token=876f2519b10cea9dc131b87db2e5318e5d4ea64f; xq_r_token=709abdc1ccb40ac956166989385ffd603ad6ab6f; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; __utmt=1; __utma=1.1427739092.1496644958.1497179105.1497182510.8; __utmb=1.4.10.1497182510; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
+            conn.addRequestProperty("Host", "xueqiu.com");
+            conn.addRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+            conn.connect();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+
+
+            JSONObject object = new JSONObject(reader.readLine());
+            JSONArray list = object.getJSONArray("chartlist");
+            for (int i = 0; i < list.length(); i++) {
+                JSONObject kdata = list.getJSONObject(i);
+
+                /**
+                 *  "volume": 30051583,
+                 "open": 17.86,
+                 "high": 17.94,
+                 "close": 17.78,
+                 "low": 17.77,
+                 "chg": -0.21,
+                 "percent": -1.17,
+                 "turnrate": 0.16,
+                 "ma5": 17.964,
+                 "ma10": 18.001,
+                 "ma20": 17.731,
+                 "ma30": 17.74,
+                 "dif": 0.08,
+                 "dea": 0.06,
+                 "macd": 0.03,
+                 "time": "Mon Jun 13 00:00:00 +0800 2016"
+                 */
+
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
