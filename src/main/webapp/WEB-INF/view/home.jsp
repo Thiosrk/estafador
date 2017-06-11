@@ -51,24 +51,23 @@
 </head>
 <body>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1 class="page-head-line" >
-                            <span style="margin-left: 35%">银行业股票盘点</span>
-                        </h1>
-                        <h1 class="page-subhead-line">每日更新 </h1>
 
-                    </div>
-                </div>
                 <!-- /. ROW  -->
 
 
             <div class="row">
                 <div class="col-md-6" style="margin-left: 20%">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 >
+                                <span style="margin-left: 40%">银行业股票盘点</span>
+                            </h1>
+                        </div>
+                    </div>
                      <!--    Hover Rows  -->
                     <div class="panel panel-default"   style="width: 800px;">
-                        <div class="panel-heading">
-                            <span  style="margin-left: 40%">股票涨跌榜</span>
+                        <div class="panel-heading" style="text-align: center">
+                            <span  style="text-align: center">股票涨跌榜</span>
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
