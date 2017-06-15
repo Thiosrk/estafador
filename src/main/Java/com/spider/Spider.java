@@ -56,9 +56,11 @@ public class Spider {
 //        List<Stock> allStocks = spider.getAllStocks();
 
         //2.单个获取某股票最新信息
+        //[数据来源：百度股票通、东方财富网]
 //        Stock stock = spider.getStock("sh600015");
 
         //3.获得行业信息
+        //[数据来源：东方财富网]
 //        Bank bank = spider.getBank();
 
         //4.获得银行行业的研究报告
@@ -74,13 +76,13 @@ public class Spider {
 //        List<Report> stockReports =spider.getTCReports("sh600000");
 
         //6.新闻和公告
-        //[来源：https://xueqiu.com/S/SH600000] 1是页数，每页10条
+        //[数据来源：雪球 https://xueqiu.com/S/SH600000] 1是页数，每页10条
         //说明：公告也使用News实体类,不过没有title，主要是intro，其中有链接
 //        List<News> newsList = spider.getNews("sh600000",1);
 //        List<News> notices = spider.getNotices("sh600000",1);
 
         //7.论坛讨论
-        //[来源：https://xueqiu.com/S/SH600000]
+        //[数据来源：雪球https://xueqiu.com/S/SH600000]
         // page 页数，sort 排序方式[sort="time"时间排序 sort="reply"热度排序]
 //        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "time");
 //        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "reply");
@@ -88,6 +90,7 @@ public class Spider {
 
 
         //日K周K月K
+        //[数据来源：雪球，本方法没有使用。获取日K数据使用的是tushare，python获得的]
         //type: "1day" 日K  "1week" 周K "1month" 月K
         //
 //        spider.getKData("sh600000","1day");
