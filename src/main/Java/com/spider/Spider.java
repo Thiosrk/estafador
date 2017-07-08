@@ -15,12 +15,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +83,7 @@ public class Spider {
         //[数据来源：雪球https://xueqiu.com/S/SH600000]
         // page 页数，sort 排序方式[sort="time"时间排序 sort="reply"热度排序]
 //        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "time");
-//        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "reply");
+        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "reply");
 
 
 
@@ -460,20 +458,27 @@ public class Spider {
 
     public List<News> getNews(String stockId, int page) {
 
-        String url = "https://xueqiu.com/statuses/stock_timeline.json?symbol_id=" + stockId + "&count=10&page=" + page;
+        String url = "https://xueqiu.com/statuses/stock_timeline.json";
+        String query = "";
+        try {
+            query = String.format("symbol_id=%s&count=10&page=%s",
+                    URLEncoder.encode(stockId, "UTF-8"),
+                    URLEncoder.encode(String.valueOf(page), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         List<News> newsList = new ArrayList<News>();
         try {
-            URL getUrl = new URL(url);
+            URL getUrl = new URL(url + "?" + query);
             HttpURLConnection conn = (HttpURLConnection) getUrl.openConnection();
             conn.setRequestMethod("GET");
-
             conn.addRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
             conn.addRequestProperty("Cache-Control", "no-cache");
             conn.addRequestProperty("Connection", "keep-alive");
             conn.addRequestProperty("Content-type", "text/json");
             conn.addRequestProperty("Accept-Charset", "utf-8");
             conn.addRequestProperty("contentType", "utf-8");
-            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; xq_a_token=876f2519b10cea9dc131b87db2e5318e5d4ea64f; xq_r_token=709abdc1ccb40ac956166989385ffd603ad6ab6f; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; __utmt=1; __utma=1.1427739092.1496644958.1497160756.1497175005.6; __utmb=1.3.10.1497175005; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
+            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; Hm_lvt_1db88642e346389874251b5a1eded6e3=1497184634; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1497184634; xq_a_token=0a52c567442f1fdd8b09c27e0abb26438e274a7e; xq_r_token=43c6fed2d6b5cc8bc38cc9694c6c1cf121d38471; __utmt=1; __utma=1.1427739092.1496644958.1497182510.1499498885.9; __utmb=1.4.9.1499499422277; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
             conn.addRequestProperty("Host", "xueqiu.com");
             conn.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 
@@ -522,7 +527,7 @@ public class Spider {
             conn.addRequestProperty("Content-type", "text/json");
             conn.addRequestProperty("Accept-Charset", "utf-8");
             conn.addRequestProperty("contentType", "utf-8");
-            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; xq_a_token=876f2519b10cea9dc131b87db2e5318e5d4ea64f; xq_r_token=709abdc1ccb40ac956166989385ffd603ad6ab6f; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; __utma=1.1427739092.1496644958.1497160756.1497175005.6; __utmb=1.3.10.1497175005; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
+            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; Hm_lvt_1db88642e346389874251b5a1eded6e3=1497184634; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1497184634; xq_a_token=0a52c567442f1fdd8b09c27e0abb26438e274a7e; xq_r_token=43c6fed2d6b5cc8bc38cc9694c6c1cf121d38471; __utmt=1; __utma=1.1427739092.1496644958.1497182510.1499498885.9; __utmb=1.4.9.1499499422277; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
             conn.addRequestProperty("Host", "xueqiu.com");
             conn.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 
@@ -562,7 +567,7 @@ public class Spider {
             conn.addRequestProperty("Content-type", "text/json");
             conn.addRequestProperty("Accept-Charset", "utf-8");
             conn.addRequestProperty("contentType", "utf-8");
-            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; xq_a_token=876f2519b10cea9dc131b87db2e5318e5d4ea64f; xq_r_token=709abdc1ccb40ac956166989385ffd603ad6ab6f; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; __utmt=1; __utma=1.1427739092.1496644958.1497175005.1497179105.7; __utmb=1.1.10.1497179105; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
+            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; Hm_lvt_1db88642e346389874251b5a1eded6e3=1497184634; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1497184634; xq_a_token=0a52c567442f1fdd8b09c27e0abb26438e274a7e; xq_r_token=43c6fed2d6b5cc8bc38cc9694c6c1cf121d38471; __utmt=1; __utma=1.1427739092.1496644958.1497182510.1499498885.9; __utmb=1.4.9.1499499422277; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
             conn.addRequestProperty("Host", "xueqiu.com");
             conn.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 
