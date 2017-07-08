@@ -1,6 +1,7 @@
 package com.spider;
 
 
+import com.alibaba.druid.support.logging.Log;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import static java.util.Arrays.asList;
 
@@ -83,7 +85,7 @@ public class Spider {
         //[数据来源：雪球https://xueqiu.com/S/SH600000]
         // page 页数，sort 排序方式[sort="time"时间排序 sort="reply"热度排序]
 //        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "time");
-        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "reply");
+//        List<Discuss> discusses = spider.getDiscusses("sh600000", 1, "reply");
 
 
 
@@ -91,7 +93,7 @@ public class Spider {
         //[数据来源：雪球，本方法没有使用。获取日K数据使用的是tushare，python获得的]
         //type: "1day" 日K  "1week" 周K "1month" 月K
         //
-//        spider.getKData("sh600000","1day");
+        spider.getKData("sh600000","1day");
 //        spider.getKData("sh600000","1week");
 //        spider.getKData("sh600000","1month");
 
@@ -611,15 +613,16 @@ public class Spider {
             conn.addRequestProperty("Content-type", "text/json");
             conn.addRequestProperty("Accept-Charset", "utf-8");
             conn.addRequestProperty("contentType", "utf-8");
-            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; xq_a_token=876f2519b10cea9dc131b87db2e5318e5d4ea64f; xq_r_token=709abdc1ccb40ac956166989385ffd603ad6ab6f; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; __utmt=1; __utma=1.1427739092.1496644958.1497179105.1497182510.8; __utmb=1.4.10.1497182510; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
+            conn.addRequestProperty("Cookie", "aliyungf_tc=AQAAACWW3WPo6gsAHmxB39V/aOUy/YJt; s=fv11v7aqng; u=201496644958316; device_id=a3fa357141af90c5784a62781a62dc66; webp=0; Hm_lvt_1db88642e346389874251b5a1eded6e3=1497184634; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1497184634; xq_a_token=0a52c567442f1fdd8b09c27e0abb26438e274a7e; xq_r_token=43c6fed2d6b5cc8bc38cc9694c6c1cf121d38471; __utmt=1; __utma=1.1427739092.1496644958.1497182510.1499498885.9; __utmb=1.4.9.1499499422277; __utmc=1; __utmz=1.1496644958.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
             conn.addRequestProperty("Host", "xueqiu.com");
             conn.addRequestProperty("X-Requested-With", "XMLHttpRequest");
 
             conn.connect();
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
 
-
-            JSONObject object = new JSONObject(reader.readLine());
+            String result =reader.readLine();
+            System.out.println(result);
+            JSONObject object = new JSONObject(result);
             JSONArray list = object.getJSONArray("chartlist");
             for (int i = 0; i < list.length(); i++) {
                 JSONObject kdata = list.getJSONObject(i);
